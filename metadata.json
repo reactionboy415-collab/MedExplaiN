@@ -1,0 +1,6 @@
+{
+  "name": "MedExplaiN AI",
+  "description": "AI-powered medical report and prescription explainer. Upload medicine labels, prescriptions, or lab reports to get clear, simplified explanations and translations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

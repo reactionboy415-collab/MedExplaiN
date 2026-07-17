@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary SEO Metadata -->
+    <title>MedExplaiN AI — Medical Report & Prescription Explainer</title>
+    <meta name="description" content="Upload medical reports, lab blood tests, pharmacist instructions, or handwritten prescriptions to instantly translate complex medical terms into plain, lay-friendly summaries." />
+    <meta name="keywords" content="medical report explainer, patient health literacy, lisinopril side effects, blood pressure reference, blood test ocr, doctor prescription, lay terms medical, translate prescription" />
+    <link rel="canonical" href="https://medexplain-ai.studio/build" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://medexplain-ai.studio/build" />
+    <meta property="og:title" content="MedExplaiN AI — Medical Report & Prescription Explainer" />
+    <meta property="og:description" content="Decipher handwritten prescription scripts, tiny dosage values, and lab panels into layman's terms across multiple languages in seconds." />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=1200&h=630" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://medexplain-ai.studio/build" />
+    <meta property="twitter:title" content="MedExplaiN AI — Medical Report & Prescription Explainer" />
+    <meta property="twitter:description" content="Decipher handwritten prescription scripts, tiny dosage values, and lab panels into layman's terms across multiple languages in seconds." />
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=1200&h=630" />
+
+    <!-- PWA & Device Config -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#2563eb" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🩺</text></svg>" />
+
+    <!-- Structured JSON-LD Data for SoftwareApplication & FAQ -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "MedExplaiN AI",
+        "operatingSystem": "Web, iOS, Android",
+        "applicationCategory": "HealthApplication",
+        "description": "An AI utility for patient health literacy that converts handwritten doctor scripts, medication containers, and lab profiles into simplified patient languages.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0.00",
+          "priceCurrency": "USD"
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Can MedExplaiN AI replace my medical doctor?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No, absolutely not. MedExplaiN AI is strictly an educational tool designed to help patients understand complex reports, terminology, and medicine structures. It is not an active diagnostic platform and is never a replacement for a licensed healthcare professional's assessment, diagnostic reasoning, or treatment recommendations."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is my personal medical data safe on this platform?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, privacy is our highest priority. All image and report processing happens in high-security, server-side containers. Your files and base64 strings are never stored or logged in databases, and are immediately deleted upon completing the analysis request."
+            }
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
