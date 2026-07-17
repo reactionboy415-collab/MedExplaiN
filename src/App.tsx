@@ -166,25 +166,76 @@ How can I help you today?`,
     }
   };
 
-  // File processing and base64 translation
-  const processFile = (file: File) => {
+  const compressImage = (file: File, maxWidth = 1600, maxHeight = 1600, quality = 0.8): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      if (file.type === "application/pdf") {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = (err) => reject(err);
+        reader.readAsDataURL(file);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxWidth || height > maxHeight) {
+            if (width > height) {
+              height = Math.round((height * maxWidth) / width);
+              width = maxWidth;
+            } else {
+              width = Math.round((width * maxHeight) / height);
+              height = maxHeight;
+            }
+          }
+
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+
+          const ctx = canvas.getContext("2d");
+          if (!ctx) {
+            resolve(event.target?.result as string);
+            return;
+          }
+
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressedBase64 = canvas.toDataURL("image/jpeg", quality);
+          resolve(compressedBase64);
+        };
+        img.onerror = () => {
+          resolve(event.target?.result as string);
+        };
+        img.src = event.target?.result as string;
+      };
+      reader.onerror = (err) => reject(err);
+      reader.readAsDataURL(file);
+    });
+  };
+
+  // File processing and base64 translation with automatic image compression
+  const processFile = async (file: File) => {
     if (!file.type.startsWith("image/") && file.type !== "application/pdf") {
       setErrorMessage("Please select or drop an image file (PNG, JPG, WEBP) or a PDF report.");
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const base64String = reader.result as string;
+    setIsOcrLoading(true);
+    setErrorMessage(null);
+    try {
+      const base64String = await compressImage(file);
       setUploadedImage(base64String);
-      setErrorMessage(null);
-      // Automatically trigger extraction once file is ready
-      extractData(base64String, file.type);
-    };
-    reader.onerror = () => {
-      setErrorMessage("Failed to read the file. Please try again.");
-    };
-    reader.readAsDataURL(file);
+      // Automatically trigger extraction once file is compressed and ready
+      extractData(base64String, file.type === "application/pdf" ? "application/pdf" : "image/jpeg");
+    } catch (err: any) {
+      console.error(err);
+      setErrorMessage("Failed to read and compress the file. Please try again.");
+      setIsOcrLoading(false);
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
