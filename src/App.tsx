@@ -33,14 +33,94 @@ import {
   Edit3,
   Sliders,
   Eye,
+  History,
+  Clock,
 } from "lucide-react";
 import { SAMPLE_REPORTS, FEATURES, FAQS } from "./data";
 import { LabReport, Biomarker } from "./types";
+
+interface HistoryEntry {
+  id: string;
+  timestamp: number;
+  reportData: LabReport;
+  analysisResult: string;
+  selectedLanguage: string;
+}
 
 export default function App() {
   // Navigation & Page routing
   const [activeTab, setActiveTab] = useState<string>("home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+
+  // Local storage history state
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
+
+  // Load and periodically prune history
+  useEffect(() => {
+    const loadAndPruneHistory = () => {
+      try {
+        const stored = localStorage.getItem("medexplain_history");
+        if (stored) {
+          const parsed: HistoryEntry[] = JSON.parse(stored);
+          const thirtyMinutesInMs = 30 * 60 * 1000;
+          const now = Date.now();
+          const valid = parsed.filter(item => now - item.timestamp < thirtyMinutesInMs);
+          
+          if (valid.length !== parsed.length) {
+            localStorage.setItem("medexplain_history", JSON.stringify(valid));
+          }
+          setHistory(valid);
+        }
+      } catch (e) {
+        console.error("Failed to load history from localStorage", e);
+      }
+    };
+
+    loadAndPruneHistory();
+
+    // Prune every 15 seconds to automatically expire old items
+    const interval = setInterval(loadAndPruneHistory, 15000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const getRelativeTimeStr = (timestamp: number) => {
+    const diffMs = Date.now() - timestamp;
+    const diffMins = Math.floor(diffMs / (60 * 1000));
+    if (diffMins < 1) return "Just now";
+    return `${diffMins} min${diffMins > 1 ? "s" : ""} ago`;
+  };
+
+  const loadHistoryEntry = (entry: HistoryEntry) => {
+    setUploadedImage("history-restored");
+    setErrorMessage(null);
+    setReportData(entry.reportData);
+    setAnalysisResult(entry.analysisResult);
+    setSelectedLanguage(entry.selectedLanguage);
+    
+    // Scroll smoothly to workspace
+    const elem = document.getElementById("analyzer-workspace");
+    if (elem) elem.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const deleteHistoryEntry = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // prevent triggering loadHistoryEntry
+    try {
+      const updated = history.filter(item => item.id !== id);
+      localStorage.setItem("medexplain_history", JSON.stringify(updated));
+      setHistory(updated);
+    } catch (err) {
+      console.error("Failed to delete history item", err);
+    }
+  };
+
+  const clearHistory = () => {
+    try {
+      localStorage.removeItem("medexplain_history");
+      setHistory([]);
+    } catch (err) {
+      console.error("Failed to clear history", err);
+    }
+  };
 
   // Dark/Light Theme state
   const [theme, setTheme] = useState<"light" | "dark">(() => {
@@ -166,7 +246,7 @@ How can I help you today?`,
     }
   };
 
-  const compressImage = (file: File, maxWidth = 1600, maxHeight = 1600, quality = 0.8): Promise<string> => {
+  const compressImage = (file: File, maxWidth = 1024, maxHeight = 1024, quality = 0.7): Promise<string> => {
     return new Promise((resolve, reject) => {
       if (file.type === "application/pdf") {
         const reader = new FileReader();
@@ -224,6 +304,13 @@ How can I help you today?`,
       return;
     }
 
+    // Vercel serverless request body payload limit is 4.5MB. Base64 is ~33% larger than binary.
+    // Restricting PDF to 3MB ensures it safely stays under 4MB as a base64 string.
+    if (file.type === "application/pdf" && file.size > 3 * 1024 * 1024) {
+      setErrorMessage("To ensure successful processing on cloud servers, PDF documents must be under 3MB. Please compress your PDF or upload a clear photo of the report instead.");
+      return;
+    }
+
     setIsOcrLoading(true);
     setErrorMessage(null);
     try {
@@ -268,6 +355,38 @@ How can I help you today?`,
       }
 
       setAnalysisResult(data.analysis);
+
+      // Save to local storage history (keep last 5)
+      try {
+        const stored = localStorage.getItem("medexplain_history");
+        let currentHistory: HistoryEntry[] = stored ? JSON.parse(stored) : [];
+        const now = Date.now();
+        const thirtyMinutesInMs = 30 * 60 * 1000;
+        
+        // Filter out expired items and check duplicate
+        currentHistory = currentHistory.filter(item => now - item.timestamp < thirtyMinutesInMs);
+        
+        const isDuplicate = currentHistory.length > 0 && 
+          JSON.stringify(currentHistory[0].reportData) === JSON.stringify(reportToAnalyze) &&
+          currentHistory[0].analysisResult === data.analysis &&
+          currentHistory[0].selectedLanguage === targetLang;
+
+        if (!isDuplicate) {
+          const newEntry: HistoryEntry = {
+            id: now.toString(),
+            timestamp: now,
+            reportData: reportToAnalyze,
+            analysisResult: data.analysis,
+            selectedLanguage: targetLang
+          };
+          
+          const updatedHistory = [newEntry, ...currentHistory].slice(0, 5);
+          localStorage.setItem("medexplain_history", JSON.stringify(updatedHistory));
+          setHistory(updatedHistory);
+        }
+      } catch (e) {
+        console.error("Failed to save history item", e);
+      }
     } catch (err: any) {
       console.error(err);
       let msg = err.message || "An error occurred while generating details.";
@@ -995,6 +1114,83 @@ How can I help you today?`,
               </div>
             )}
 
+            {/* RECENT HISTORY BAR */}
+            {history.length > 0 && (
+              <div className="mb-8 p-5 bg-gradient-to-r from-slate-50 to-blue-50/20 dark:from-slate-900/40 dark:to-blue-950/10 border border-slate-200/60 dark:border-slate-800 rounded-3xl shadow-xs">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-9 h-9 rounded-xl bg-blue-100 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 flex items-center justify-center shadow-xs">
+                      <History className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100">
+                        Recent Analyses (Last 30 Min)
+                      </h3>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                        Quickly restore any of your last 5 scanned reports.
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={clearHistory}
+                    className="text-xs font-semibold text-rose-600 dark:text-rose-400 hover:underline flex items-center gap-1 cursor-pointer bg-transparent border-none animate-fade-in"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    Clear All
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3.5">
+                  {history.map((entry) => {
+                    const timeStr = getRelativeTimeStr(entry.timestamp);
+                    const timeRemainingMins = Math.max(0, 30 - Math.floor((Date.now() - entry.timestamp) / (60 * 1000)));
+                    const reportTitle = entry.reportData.report_type || entry.reportData.lab_name || "Medical Report";
+                    const biomarkersCount = entry.reportData.biomarkers?.length || 0;
+
+                    return (
+                      <div
+                        key={entry.id}
+                        onClick={() => loadHistoryEntry(entry)}
+                        className="group relative bg-white dark:bg-slate-950 border border-slate-150 dark:border-slate-850 hover:border-blue-500 dark:hover:border-blue-500/80 p-4 rounded-2xl shadow-xs hover:shadow-md cursor-pointer transition-all duration-200 flex flex-col justify-between min-h-[110px]"
+                      >
+                        <div className="min-w-0">
+                          <div className="flex items-start justify-between gap-1 mb-1.5">
+                            <p className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate pr-4 line-clamp-1 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                              {reportTitle}
+                            </p>
+                            <button
+                              onClick={(e) => deleteHistoryEntry(entry.id, e)}
+                              className="opacity-0 group-hover:opacity-100 absolute top-3 right-3 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition-all p-1 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-lg z-10"
+                              title="Remove from history"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+
+                          <div className="flex items-center gap-1 text-[10px] text-slate-400 dark:text-slate-500 font-mono mb-2">
+                            <FileText className="w-3 h-3" />
+                            <span>{biomarkersCount} metrics</span>
+                            <span>•</span>
+                            <span>{entry.selectedLanguage}</span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between mt-auto pt-2 border-t border-slate-50 dark:border-slate-900/60 text-[10px]">
+                          <span className="text-slate-400 dark:text-slate-500 flex items-center gap-1 font-medium">
+                            <Clock className="w-3 h-3 text-slate-400" />
+                            {timeStr}
+                          </span>
+                          <span className="text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-50 dark:bg-emerald-950/40 px-1.5 py-0.5 rounded">
+                            {timeRemainingMins}m left
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             {/* FLOW MODULES */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               
@@ -1067,10 +1263,18 @@ How can I help you today?`,
                       </div>
                       <div className="min-w-0">
                         <p className="text-sm font-semibold text-slate-900 dark:text-white truncate">
-                          {uploadedImage === "sample-template" ? "Demo Sandbox Template Loaded" : "Medical File Extracted"}
+                          {uploadedImage === "sample-template" 
+                            ? "Demo Sandbox Template Loaded" 
+                            : uploadedImage === "history-restored"
+                            ? "Analysis Restored from History"
+                            : "Medical File Extracted"}
                         </p>
                         <p className="text-xs text-slate-500 dark:text-slate-400">
-                          {uploadedImage === "sample-template" ? "Using structured reference parameters" : "Processing complete"}
+                          {uploadedImage === "sample-template" 
+                            ? "Using structured reference parameters" 
+                            : uploadedImage === "history-restored"
+                            ? "Loaded previous report data & Dr. Khan's explanation"
+                            : "Processing complete"}
                         </p>
                       </div>
                     </div>
@@ -1461,7 +1665,7 @@ How can I help you today?`,
 
                   {/* EXPLANATION MARKDOWN CONTENT */}
                   {analysisResult && !isAnalysisLoading && (
-                    <div className="flex-1 overflow-y-auto pr-1">
+                    <div className="flex-1 overflow-y-auto pr-1 relative min-h-[300px]">
                       <div className="prose prose-slate dark:prose-invert max-w-none text-left">
                         {renderCustomMarkdown(analysisResult)}
                       </div>
