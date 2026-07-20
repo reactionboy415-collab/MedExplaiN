@@ -46,7 +46,7 @@ MedExplaiN AI converts medical documents into clear, patient-friendly explanatio
 
 🚀 Getting Started
 
-git clone https://github.com/your-username/medexplain-ai.git
+git clone https://github.com/reactionboy415-collab/MedExplaiN
 
 cd medexplain-ai
 
@@ -60,8 +60,8 @@ Open "http://localhost:3000" in your browser.
 
 📸 Demo
 
-- Live Demo: Coming Soon
-- Demo Video: Coming Soon
+- Live Demo: https://medexplain-ai-two.vercel.app
+- Demo Video: 
 
 ---
 
