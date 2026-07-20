@@ -61,7 +61,7 @@ Open "http://localhost:3000" in your browser.
 📸 Demo
 
 - Live Demo: https://medexplain-ai-two.vercel.app
-- Demo Video: 
+- Demo Video: https://youtu.be/QvipKoZT2j4?si=pgYQQALleieyiPIf
 
 ---
 
