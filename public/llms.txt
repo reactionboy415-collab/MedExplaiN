@@ -1,0 +1,32 @@
+# MedExplaiN AI — Clinical Patient Health Literacy Platform
+> Canonical URL: https://medexplain-ai-two.vercel.app/
+
+MedExplaiN AI is an accessible patient health literacy web utility designed to decode complex outpatient laboratory blood panels (Complete Blood Count, Comprehensive Metabolic Panel, Lipid Profiles, Kidney and Liver markers), active drug ingredient profiles, and handwritten doctor prescription Latin shorthand into plain, lay-friendly language across 7+ target languages.
+
+## Core Features & Knowledge Directory
+
+1. **AI Diagnostic & Prescription Explainer Workspace**
+   - High-confidence multimodal vision OCR parsing of laboratory panels and cursive medical scripts.
+   - Empathetic plain-English layperson translations powered by Dr. Khan AI.
+   - Automated safety warnings for overlapping active molecules (e.g. acetaminophen toxicity).
+   - Multilingual support for English, Spanish, French, German, Hindi, Arabic, and Chinese.
+   - Exportable, printable patient health summaries (PDF/MD).
+
+2. **Lab Biomarkers Directory & Clinical Reference Intervals (50+ Analytes)**
+   - Complete Blood Count (CBC): Hemoglobin (Hb), Hematocrit (Hct), WBC, Platelets, MCV, MCH, RDW.
+   - Comprehensive Metabolic Panel (CMP): Fasting Blood Glucose, Serum Creatinine, eGFR, Potassium, Sodium, BUN.
+   - Liver Enzymes: Alanine Aminotransferase (ALT/SGPT), Aspartate Aminotransferase (AST/SGOT), Bilirubin.
+   - Lipid Profile: Total Cholesterol, LDL-C, HDL-C, Triglycerides.
+   - Endocrine: Thyroid Stimulating Hormone (TSH), Free T4, Glycated Hemoglobin (HbA1c), 25-OH Vitamin D, Vitamin B12.
+
+3. **Prescription Latin Sig Shorthand Decoder**
+   - Decodes PO (by mouth), BID (twice daily), TID (three times daily), QID (four times daily), QHS (at bedtime), PRN (as needed), AC (before meals), PC (after meals), STAT (immediate), and SL (sublingual).
+   - Drug interaction safety guidelines preventing accidental duplicate dosing in OTC cold and pain relievers.
+
+4. **Doctor Visit Prep Kit & Question Checklist Generator**
+   - Interactive questionnaire tool generating customized, prioritized question checklists for 15-minute physician consultations.
+
+## Compliance & Standards
+- Strictly educational patient wellness literacy; not an active diagnostic or therapeutic platform.
+- Grounded on National Institutes of Health (NIH PubMed), CDC, WHO, and American Heart Association (AHA) guidelines.
+- Ephemeral execution model: Zero persistent logging or selling of private medical documents.

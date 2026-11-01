@@ -1,0 +1,4 @@
+Contact: mailto:security@medexplain-ai.studio
+Expires: 2027-07-17T08:35:00.000Z
+Preferred-Languages: en
+Policy: https://medexplain-ai.studio/privacy
