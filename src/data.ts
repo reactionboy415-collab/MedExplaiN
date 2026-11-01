@@ -169,23 +169,64 @@ export const FEATURES: FeatureItem[] = [
 
 export const FAQS: FAQItem[] = [
   {
-    question: "Can MedExplaiN AI replace my medical doctor?",
-    answer: "No, absolutely not. MedExplaiN AI is strictly an educational tool designed to help patients understand complex reports, terminology, and medicine structures. It is not an active diagnostic platform and is never a replacement for a licensed healthcare professional's assessment, diagnostic reasoning, or treatment recommendations."
+    question: "Can MedExplaiN AI replace my medical doctor or diagnostic physician?",
+    answer: "No, absolutely not. MedExplaiN AI is strictly an educational tool designed to help patients understand complex reports, terminology, reference ranges, and medicine structures. It is not an active diagnostic platform and is never a replacement for a licensed healthcare professional's clinical assessment, diagnostic reasoning, or treatment recommendations."
   },
   {
-    question: "Is my personal medical data safe on this platform?",
-    answer: "Yes, privacy is our highest priority. All image and report processing happens in high-security, server-side containers. Your files and base64 strings are never stored or logged in databases, and are immediately deleted upon completing the analysis request."
+    question: "Is my personal medical data safe, private, and confidential on this platform?",
+    answer: "Yes, privacy is our highest priority. All image and report processing happens in high-security, ephemeral server-side containers. Your uploaded images and base64 strings are never stored or logged in permanent databases, and are immediately deleted upon completing the analysis request. No personal identifiers (like SSN, insurance IDs, or home address) are collected or tracked."
   },
   {
-    question: "What types of documents can I upload?",
-    answer: "You can upload JPEG, PNG images, and digital documents containing prescriptions, lab blood reports, urine panels, medical discharge letters, and over-the-counter medicine containers or boxes."
+    question: "What types of medical documents can I upload for AI explanation?",
+    answer: "You can upload JPEG, PNG images, smartphone camera photos, and digital documents containing outpatient laboratory blood panels (CBC, CMP, Lipid panel, Thyroid panel), urine tests, hospital discharge summaries, medication bottle labels, and handwritten doctor prescription slips."
   },
   {
     question: "Does the AI support languages other than English?",
-    answer: "Yes, we support deep translation. You can receive explanations, dosage instructions, and physician questions fully translated into Spanish, French, German, Hindi, Arabic, Chinese, and many more, with clinical terminology preserved correctly."
+    answer: "Yes, we support comprehensive multilingual medical translation. You can receive clinical explanations, dosage instructions, and physician questions fully translated into Spanish (Español), French (Français), German (Deutsch), Hindi (हिन्दी), Arabic (العربية), Chinese (中文), and more, with complex pharmacological terminology preserved accurately."
   },
   {
-    question: "Are blood pressure and heart rate ranges standardized?",
-    answer: "Yes, we use internationally recognized clinical references from sources like the AHA (American Heart Association), WHO, and NIH to label reference flags (High, Low, Normal). However, personal target levels should always be finalized by your doctor."
+    question: "What do the 'High', 'Low', or 'Flag' notations mean on my lab report?",
+    answer: "Laboratories establish standard biological reference intervals derived from 95% of healthy populations. A value labeled 'High' or 'Low' simply means your numeric metric sits outside that statistical 95% bell curve. It is a signpost for clinical correlation—not an automatic sign of disease. Mild variances can stem from hydration status, recent intense exercise, sleep patterns, or temporary viral infections."
+  },
+  {
+    question: "Can taking two over-the-counter medicines cause an accidental drug overdose?",
+    answer: "Yes, this is an extremely common safety risk known as duplicate active ingredient toxicity. For example, acetaminophen (paracetamol) is found in hundreds of branded products (Tylenol, DayQuil, NyQuil, Excedrin, Percocet). Taking cold syrup alongside headache pills can easily exceed the safe 4,000 mg daily liver threshold. MedExplaiN AI specifically scans for active chemical molecules to alert you to overlapping duplicate ingredients."
+  },
+  {
+    question: "Why does my fasting glucose or lipid profile require 8 to 12 hours of fasting?",
+    answer: "Consuming carbohydrates or fats immediately triggers digestion, causing temporary surges in blood glucose and circulating chylomicron triglycerides. Fasting for 8–12 hours allows circulating nutrients to reach baseline homeostasis, providing your physician an accurate baseline measurement of metabolic health and insulin sensitivity."
+  },
+  {
+    question: "Can severe dehydration cause abnormal blood lab test numbers?",
+    answer: "Yes! Dehydration causes hemoconcentration—a decrease in blood plasma volume that makes circulating cells and molecules appear artificially concentrated. Dehydration frequently causes elevated hematocrit, elevated serum sodium, high blood urea nitrogen (BUN), and elevated total protein."
+  },
+  {
+    question: "Why might my serum creatinine test come back elevated after heavy exercise?",
+    answer: "Creatinine is a natural metabolic breakdown byproduct of phosphocreatine in skeletal muscle tissue. Strenuous weightlifting, crossfit, marathon running, or taking dietary creatine monohydrate supplements temporarily increases circulating creatinine without implying underlying renal kidney damage."
+  },
+  {
+    question: "What does HbA1c measure compared to a daily fingerstick blood glucose test?",
+    answer: "A standard fingerstick or fasting glucose test measures the exact sugar level in your bloodstream at that specific minute. In contrast, Hemoglobin A1c (HbA1c) measures the percentage of red blood cells coated with glucose over their 90 to 120-day natural lifespan, providing a stable 3-month panoramic view of glycemic control."
+  },
+  {
+    question: "What do doctor prescription abbreviations like PO, BID, PRN, and QHS mean?",
+    answer: "These are standard Latin medical shorthand codes: 'PO' (Per Os) means orally by mouth; 'BID' (Bis In Die) means twice a day (roughly 12 hours apart); 'PRN' (Pro Re Nata) means take only as needed when symptoms appear; 'AC' means before meals, 'PC' means after meals, and 'QHS' means take at bedtime."
+  },
+  {
+    question: "What should I do if my blood pressure reading is in the red hypertensive crisis zone?",
+    answer: "If your systolic blood pressure exceeds 180 mmHg or diastolic exceeds 120 mmHg, rest quietly for 5 minutes and re-measure. If readings remain at or above 180/120 mmHg, and you experience warning symptoms like chest pain, shortness of breath, back pain, numbness, or vision changes, this is an emergency requiring immediate 911 or emergency room medical attention."
+  },
+  {
+    question: "Can I download and print the AI explanation to bring to my doctor's appointment?",
+    answer: "Yes! Once Dr. Khan AI finishes analyzing your report, simply click the 'Save PDF/MD' button at the top of the explanation card. This exports a structured, cleanly formatted summary featuring your test findings, potential discussion topics, and prioritized questions for your physician."
+  },
+  {
+    question: "Can MedExplaiN AI read messy cursive handwritten doctor scripts?",
+    answer: "Yes, our server uses multimodal vision OCR tailored to decipher complex medical handwriting, Latin doctor sig abbreviations, apothecary units, and tiny medicine packaging text with high clinical confidence."
+  },
+  {
+    question: "How can I prepare the most productive questions for my doctor's visit?",
+    answer: "Review your abnormal indicators, write down your current symptoms and when they began, bring all prescription bottles and vitamins you take, and ask three core questions: 'What might be causing this value to be abnormal?', 'Do we need a follow-up confirmatory test?', and 'What lifestyle or medication changes should we consider first?'"
   }
 ];
+

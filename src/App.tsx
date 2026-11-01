@@ -35,9 +35,19 @@ import {
   Eye,
   History,
   Clock,
+  Share2,
+  Pill,
+  Search,
+  CheckSquare,
 } from "lucide-react";
 import { SAMPLE_REPORTS, FEATURES, FAQS } from "./data";
 import { LabReport, Biomarker } from "./types";
+import LabGuideDirectory from "./components/LabGuideDirectory";
+import RxSigDecoder from "./components/RxSigDecoder";
+import DoctorPrepKit from "./components/DoctorPrepKit";
+import QuickBiomarkerEvaluator from "./components/QuickBiomarkerEvaluator";
+import { BIOMARKER_DATABASE, BiomarkerKnowledge } from "./biomarkerData";
+import { RX_ABBREVIATIONS } from "./rxAbbreviations";
 
 interface HistoryEntry {
   id: string;
@@ -450,6 +460,67 @@ How can I help you today?`,
     runDeepAnalysis(clonedReport);
   }
 
+  // Biomarker Directory Loader
+  function loadBiomarkerIntoAnalyzer(biomarker: BiomarkerKnowledge, testValue?: string) {
+    setUploadedImage("biomarker-guide");
+    setErrorMessage(null);
+    setAnalysisResult(null);
+
+    const numVal = testValue ? parseFloat(testValue) : null;
+    let autoFlag: "high" | "low" | "normal" = "normal";
+    if (numVal !== null && !isNaN(numVal)) {
+      if (numVal > biomarker.standardRange.high) autoFlag = "high";
+      else if (numVal < biomarker.standardRange.low) autoFlag = "low";
+    }
+
+    const singleReport: LabReport = {
+      report_date: new Date().toISOString().split("T")[0],
+      lab_name: `${biomarker.category} Clinical Assessment`,
+      report_type: "Laboratory Biomarker Panel",
+      biomarkers: [
+        {
+          name: biomarker.name,
+          value: testValue || String((biomarker.standardRange.low + biomarker.standardRange.high) / 2),
+          unit: biomarker.unit,
+          reference_low: String(biomarker.standardRange.low),
+          reference_high: String(biomarker.standardRange.high),
+          flag: autoFlag,
+        },
+      ],
+    };
+
+    setReportData(singleReport);
+    setActiveTab("analyzer");
+    setTimeout(() => {
+      const elem = document.getElementById("analyzer-workspace");
+      if (elem) elem.scrollIntoView({ behavior: "smooth" });
+    }, 150);
+
+    runDeepAnalysis(singleReport);
+  }
+
+  // Share summary handler
+  const [shareSuccess, setShareSuccess] = useState(false);
+  const handleShareSummary = async () => {
+    if (!analysisResult) return;
+    const shareText = `MedExplaiN AI Patient Summary:\n\n${analysisResult.slice(0, 600)}...\n\nRead more at https://medexplain-ai-two.vercel.app/`;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "MedExplaiN AI - Medical Report Summary",
+          text: shareText,
+          url: "https://medexplain-ai-two.vercel.app/",
+        });
+        return;
+      } catch (err) {
+        // Fallback to clipboard
+      }
+    }
+    navigator.clipboard.writeText(shareText);
+    setShareSuccess(true);
+    setTimeout(() => setShareSuccess(false), 2500);
+  };
+
   // Editing Extracted Biomarkers
   const handleBiomarkerChange = (index: number, field: keyof Biomarker, val: string) => {
     if (!reportData) return;
@@ -812,20 +883,23 @@ How can I help you today?`,
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1.5">
+          <nav className="hidden lg:flex items-center gap-1">
             {[
               { id: "home", label: "Home" },
               { id: "analyzer", label: "AI Analyzer" },
+              { id: "lab-guide", label: "Lab Biomarkers (50+)" },
+              { id: "rx-decoder", label: "Rx Sig Decoder" },
+              { id: "doctor-prep", label: "Doctor Prep Kit" },
               { id: "features", label: "Features" },
               { id: "faq", label: "FAQs" },
-              { id: "contact", label: "Contact Us" },
+              { id: "contact", label: "Contact" },
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                   activeTab === tab.id
-                    ? "bg-slate-100 dark:bg-slate-900 text-blue-600 dark:text-blue-400"
+                    ? "bg-blue-50 dark:bg-slate-900 text-blue-600 dark:text-blue-400"
                     : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-900/50"
                 }`}
               >
@@ -835,10 +909,10 @@ How can I help you today?`,
           </nav>
 
           {/* Quick Actions (Theme + CTAs) */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-3">
             <button
               onClick={toggleTheme}
-              className="p-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-all border border-slate-100 dark:border-slate-800"
+              className="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-all border border-slate-100 dark:border-slate-800 cursor-pointer"
               title="Toggle Theme"
             >
               {theme === "light" ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
@@ -846,14 +920,14 @@ How can I help you today?`,
 
             <button
               onClick={() => setActiveTab("analyzer")}
-              className="px-4 py-2 rounded-xl text-sm font-semibold text-white bg-slate-900 dark:bg-white dark:text-slate-950 hover:opacity-90 transition-all shadow-sm"
+              className="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-xs cursor-pointer"
             >
-              Get Started
+              Launch Analyzer
             </button>
           </div>
 
           {/* Mobile hamburger menu button */}
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex lg:hidden items-center gap-2">
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-all border border-slate-100 dark:border-slate-800"
@@ -873,12 +947,15 @@ How can I help you today?`,
 
         {/* Mobile menu panel */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-slate-100 dark:border-slate-900 bg-white dark:bg-slate-950 p-4 space-y-2 shadow-lg">
+          <div className="lg:hidden border-t border-slate-100 dark:border-slate-900 bg-white dark:bg-slate-950 p-4 space-y-1.5 shadow-lg max-h-[80vh] overflow-y-auto">
             {[
               { id: "home", label: "Home" },
               { id: "analyzer", label: "AI Analyzer Workspace" },
-              { id: "features", label: "Features" },
-              { id: "faq", label: "FAQs" },
+              { id: "lab-guide", label: "Lab Biomarker Directory (50+)" },
+              { id: "rx-decoder", label: "Prescription Sig Decoder" },
+              { id: "doctor-prep", label: "Doctor Prep Kit & Questions" },
+              { id: "features", label: "How It Works & Features" },
+              { id: "faq", label: "Frequently Asked Questions" },
               { id: "contact", label: "Contact Us" },
             ].map((tab) => (
               <button
@@ -887,7 +964,7 @@ How can I help you today?`,
                   setActiveTab(tab.id);
                   setMobileMenuOpen(false);
                 }}
-                className={`w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                   activeTab === tab.id
                     ? "bg-slate-100 dark:bg-slate-900 text-blue-600 dark:text-blue-400"
                     : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900/50"
@@ -902,9 +979,9 @@ How can I help you today?`,
                   setActiveTab("analyzer");
                   setMobileMenuOpen(false);
                 }}
-                className="w-full py-3 rounded-lg text-sm font-semibold text-center text-white bg-blue-600 hover:bg-blue-700 transition-all"
+                className="w-full py-2.5 rounded-xl text-xs font-bold text-center text-white bg-blue-600 hover:bg-blue-700 transition-all"
               >
-                Launch App Now
+                Launch Analyzer
               </button>
             </div>
           </div>
@@ -981,6 +1058,12 @@ How can I help you today?`,
               </div>
             </section>
 
+            {/* Interactive Real-Time Biomarker Evaluator Tool */}
+            <QuickBiomarkerEvaluator
+              onGoToAnalyzer={loadBiomarkerIntoAnalyzer}
+              onExploreDirectory={() => setActiveTab("lab-guide")}
+            />
+
             {/* Sandbox Section (Demo Templates) */}
             <section id="sandbox-section" className="py-16 bg-slate-50 dark:bg-slate-900/30 border-y border-slate-100 dark:border-slate-900">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1023,6 +1106,256 @@ How can I help you today?`,
                       </button>
                     </div>
                   ))}
+                </div>
+
+              </div>
+            </section>
+
+            {/* ==================== COMPREHENSIVE CLINICAL KNOWLEDGE HUB (HIGH SEO CONTENT) ==================== */}
+            <section className="py-20 bg-slate-50/50 dark:bg-slate-900/20 border-b border-slate-100 dark:border-slate-900">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+                
+                {/* Header */}
+                <div className="text-center max-w-3xl mx-auto">
+                  <span className="text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-50 dark:bg-blue-950 px-3 py-1.5 rounded-full inline-flex items-center gap-1.5">
+                    <BookOpen className="w-3.5 h-3.5" /> Clinical Patient Literacy Guide
+                  </span>
+                  <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-slate-900 dark:text-white mt-4 tracking-tight">
+                    How to Read and Understand Your Medical Test Results
+                  </h2>
+                  <p className="text-slate-600 dark:text-slate-400 mt-3 text-base leading-relaxed">
+                    A clinical-grade educational reference designed to demystify complex laboratory reports, biological reference intervals, and doctor prescription shorthand for patients worldwide.
+                  </p>
+                </div>
+
+                {/* Section 1: Anatomy of a Laboratory Report */}
+                <div className="bg-white dark:bg-slate-950 p-8 sm:p-10 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-6">
+                  <div className="max-w-3xl">
+                    <h3 className="text-2xl font-bold font-display text-slate-900 dark:text-white mb-2">
+                      1. The Anatomy of a Laboratory Blood Test Report
+                    </h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                      When your primary care provider or specialist orders an outpatient diagnostic blood draw, the laboratory specimen is analyzed using automated spectrophotometry, flow cytometry, or chemiluminescent immunoassay analyzers. The resulting printout consists of five standardized columns:
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+                    <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 space-y-2">
+                      <span className="text-xs font-mono font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Column 1: Analyte / Test Name</span>
+                      <h4 className="text-base font-bold text-slate-900 dark:text-white">Biomarker Identification</h4>
+                      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        The specific biological molecule, cell fraction, enzyme, or electrolyte being measured. Common examples include <strong>Hemoglobin (Hb)</strong>, <strong>Serum Creatinine</strong>, <strong>Alanine Aminotransferase (ALT)</strong>, or <strong>Lipid Triglycerides</strong>.
+                      </p>
+                    </div>
+
+                    <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 space-y-2">
+                      <span className="text-xs font-mono font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Column 2 & 3: Result & Unit</span>
+                      <h4 className="text-base font-bold text-slate-900 dark:text-white">Quantitative Metric & Scale</h4>
+                      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        The measured concentration in your bloodstream alongside the standardized scientific unit. Common units include <strong>mg/dL</strong> (milligrams per deciliter), <strong>g/dL</strong> (grams per deciliter), <strong>mEq/L</strong> (milliequivalents per liter), or <strong>U/L</strong> (international enzymatic units).
+                      </p>
+                    </div>
+
+                    <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 space-y-2">
+                      <span className="text-xs font-mono font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Column 4 & 5: Reference Interval & Flag</span>
+                      <h4 className="text-base font-bold text-slate-900 dark:text-white">Biological Normal Range</h4>
+                      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        The statistical 95% bell-curve observed in healthy cohorts. When your result exceeds or falls beneath this baseline, the laboratory computer appends a flag notation: <strong>"H" (High)</strong>, <strong>"L" (Low)</strong>, or <strong>"Critical / Red"</strong> for urgent clinician notification.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Section 2: Four Core Diagnostic Blood Panels Decoded */}
+                <div className="space-y-6">
+                  <div className="text-center max-w-2xl mx-auto">
+                    <h3 className="text-2xl font-bold font-display text-slate-900 dark:text-white">
+                      2. Common Laboratory Blood Panels Decoded
+                    </h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                      Understand what clinicians look for when evaluating your routine annual screening blood work.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Panel 1: Complete Blood Count */}
+                    <div className="bg-white dark:bg-slate-950 p-6 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">Hematology</span>
+                        <span className="text-xs font-mono text-slate-400">Panel 01</span>
+                      </div>
+                      <h4 className="text-xl font-bold text-slate-900 dark:text-white">
+                        Complete Blood Count (CBC) with Differential
+                      </h4>
+                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Evaluates the three main cellular lineages produced in your bone marrow: oxygen-transporting <strong>Red Blood Cells (Erythrocytes)</strong>, infection-fighting <strong>White Blood Cells (Leukocytes)</strong>, and clotting <strong>Platelets (Thrombocytes)</strong>.
+                      </p>
+                      <div className="pt-2 border-t border-slate-100 dark:border-slate-900 space-y-2 text-xs text-slate-700 dark:text-slate-300">
+                        <p><strong>• Hemoglobin (Hb):</strong> Normal range 12.0–17.5 g/dL. Reduced values reflect clinical anemia, active hemorrhage, or nutritional iron/B12 deficiency.</p>
+                        <p><strong>• White Blood Cells (WBC):</strong> Normal range 4.0–11.0 x10³/µL. Elevated leukocytosis indicates bacterial/viral infections, physical stress, or systemic inflammation.</p>
+                        <p><strong>• Mean Corpuscular Volume (MCV):</strong> Normal range 80–100 fL. Indicates red cell physical size (microcytic anemia vs macrocytic B12 deficiency).</p>
+                      </div>
+                    </div>
+
+                    {/* Panel 2: Comprehensive Metabolic Panel */}
+                    <div className="bg-white dark:bg-slate-950 p-6 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Biochemistry</span>
+                        <span className="text-xs font-mono text-slate-400">Panel 02</span>
+                      </div>
+                      <h4 className="text-xl font-bold text-slate-900 dark:text-white">
+                        Comprehensive Metabolic Panel (CMP)
+                      </h4>
+                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                        A foundational 14-parameter biochemical screen assessing electrolyte balance, blood sugar regulation, kidney filtration efficiency, and hepatic parenchymal integrity.
+                      </p>
+                      <div className="pt-2 border-t border-slate-100 dark:border-slate-900 space-y-2 text-xs text-slate-700 dark:text-slate-300">
+                        <p><strong>• Fasting Plasma Glucose:</strong> Normal range 70–99 mg/dL. 100–125 mg/dL indicates prediabetes; ≥126 mg/dL indicates diabetes mellitus.</p>
+                        <p><strong>• Serum Creatinine & eGFR:</strong> Primary marker for renal nephron clearance. Elevated creatinine or eGFR &lt; 60 mL/min/1.73m² indicates chronic kidney disease.</p>
+                        <p><strong>• Electrolytes (K⁺, Na⁺, CO2):</strong> Critical for cellular resting potentials, hydration, and cardiac rhythm stability.</p>
+                      </div>
+                    </div>
+
+                    {/* Panel 3: Lipid Profile */}
+                    <div className="bg-white dark:bg-slate-950 p-6 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Cardiology</span>
+                        <span className="text-xs font-mono text-slate-400">Panel 03</span>
+                      </div>
+                      <h4 className="text-xl font-bold text-slate-900 dark:text-white">
+                        Lipid Profile & Atherogenic Risk
+                      </h4>
+                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Measures circulating cholesterol and triglyceride fatty molecules to quantify 10-year risk of cardiovascular atherosclerotic disease, heart attacks, and ischemic strokes.
+                      </p>
+                      <div className="pt-2 border-t border-slate-100 dark:border-slate-900 space-y-2 text-xs text-slate-700 dark:text-slate-300">
+                        <p><strong>• LDL-C ("Bad" Cholesterol):</strong> Optimal &lt; 100 mg/dL (or &lt; 70 mg/dL in diabetic/cardiac patients). Enters arterial walls and oxidizes into plaque.</p>
+                        <p><strong>• HDL-C ("Good" Scavenger):</strong> Optimal &gt; 40 mg/dL (men) or &gt; 50 mg/dL (women). Participates in reverse cholesterol transport back to the liver.</p>
+                        <p><strong>• Triglycerides (TG):</strong> Normal &lt; 150 mg/dL. Reflects dietary sugar, refined carbohydrate intake, and insulin resistance.</p>
+                      </div>
+                    </div>
+
+                    {/* Panel 4: Liver Enzymes & Hepatic Function */}
+                    <div className="bg-white dark:bg-slate-950 p-6 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400">Hepatology</span>
+                        <span className="text-xs font-mono text-slate-400">Panel 04</span>
+                      </div>
+                      <h4 className="text-xl font-bold text-slate-900 dark:text-white">
+                        Liver Enzymes & Hepatobiliary Function
+                      </h4>
+                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Intracellular catalytic enzymes that leak into the bloodstream when hepatocytes sustain inflammatory or toxic injury from drugs, fatty infiltration, or viruses.
+                      </p>
+                      <div className="pt-2 border-t border-slate-100 dark:border-slate-900 space-y-2 text-xs text-slate-700 dark:text-slate-300">
+                        <p><strong>• Alanine Aminotransferase (ALT/SGPT):</strong> Normal range 7–56 U/L. Highly liver-specific enzyme indicating fatty liver (MASLD) or medication injury.</p>
+                        <p><strong>• Aspartate Aminotransferase (AST/SGOT):</strong> Normal range 8–48 U/L. Found in liver and skeletal muscles. An AST/ALT ratio &gt; 2 suggests alcohol etiology.</p>
+                        <p><strong>• Total Bilirubin:</strong> Yellow breakdown byproduct of red blood cells. Elevations cause clinical jaundice (yellow sclera/skin).</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Callout Link into Directory */}
+                  <div className="text-center pt-4">
+                    <button
+                      onClick={() => setActiveTab("lab-guide")}
+                      className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm shadow-md transition-all cursor-pointer"
+                    >
+                      <Activity className="w-4 h-4" />
+                      Explore All 50+ Tests in the Biomarker Directory
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Section 3: Why Do Normal Ranges Differ Across Laboratories? */}
+                <div className="bg-white dark:bg-slate-950 p-8 sm:p-10 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4">
+                  <h3 className="text-2xl font-bold font-display text-slate-900 dark:text-white">
+                    3. Why Do Reference Ranges Differ Between Labcorp, Quest, and Hospitals?
+                  </h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                    Patients are often confused when their blood test done at Quest Diagnostics shows a normal reference cutoff of <strong>100 mg/dL</strong> for glucose, while another hospital clinic lists <strong>99 mg/dL</strong> or <strong>105 mg/dL</strong>. There are three clear clinical explanations:
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+                    <div className="space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
+                      <strong className="text-slate-900 dark:text-white block text-sm">1. Instrument Calibration & Reagents</strong>
+                      <p>Different clinical chemistry analyzers (such as Roche Cobas, Abbott Architect, or Siemens Dimension) utilize proprietary enzymatic reagents and laser wavelengths, producing slight calibration variations.</p>
+                    </div>
+                    <div className="space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
+                      <strong className="text-slate-900 dark:text-white block text-sm">2. Reference Cohort Demographics</strong>
+                      <p>Under CLIA and CAP regulations, laboratories must validate their reference intervals against local healthy control populations, which can vary slightly by regional age, altitude, and demographic balance.</p>
+                    </div>
+                    <div className="space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
+                      <strong className="text-slate-900 dark:text-white block text-sm">3. Pre-Analytical Variables</strong>
+                      <p>Factors like fasting duration (8 vs 12 hours), posture during venipuncture, tourniquet time, and tube transit temperature all introduce small biological variations in blood analyte readings.</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Section 4: Latin Prescription Sig Abbreviations Quick Hub */}
+                <div className="bg-gradient-to-r from-emerald-50/60 to-teal-50/30 dark:from-slate-900/40 dark:to-emerald-950/20 border border-emerald-200/60 dark:border-slate-800 p-8 sm:p-10 rounded-3xl space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+                        Pharmacotherapy Literacy
+                      </span>
+                      <h3 className="text-2xl font-bold font-display text-slate-900 dark:text-white mt-1">
+                        4. Decoding Doctor Prescription Latin Shorthand (Sig Codes)
+                      </h3>
+                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1 max-w-2xl leading-relaxed">
+                        Physicians routinely write prescription directions in abbreviated Latin shorthand known as "Sig" (from Latin <em>Signa</em>, meaning "mark" or "write"). Review the most common abbreviations below:
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => setActiveTab("rx-decoder")}
+                      className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-all cursor-pointer whitespace-nowrap self-start sm:self-auto"
+                    >
+                      Open Full Rx Decoder
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+                    {[
+                      { code: "PO", english: "By Mouth (Orally)" },
+                      { code: "BID", english: "Twice a Day (12h)" },
+                      { code: "TID", english: "3 Times a Day (8h)" },
+                      { code: "QHS", english: "Bedtime (Night)" },
+                      { code: "PRN", english: "As Needed Only" },
+                      { code: "AC / PC", english: "Before / After Meals" },
+                    ].map((sig) => (
+                      <div key={sig.code} className="p-3.5 rounded-xl bg-white dark:bg-slate-950 border border-emerald-100 dark:border-slate-800 text-center">
+                        <span className="font-mono font-extrabold text-base text-emerald-600 dark:text-emerald-400 block">
+                          {sig.code}
+                        </span>
+                        <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium mt-0.5 block">
+                          {sig.english}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Section 5: Doctor Visit Preparation & Patient Empowerment */}
+                <div className="bg-white dark:bg-slate-950 p-8 sm:p-10 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-8">
+                  <div className="space-y-3 max-w-2xl">
+                    <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+                      Patient Advocacy
+                    </span>
+                    <h3 className="text-2xl font-bold font-display text-slate-900 dark:text-white">
+                      5. Prepare for Your Next Physician Consultation
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                      Walking into a clinic consultation with organized, written questions increases patient compliance by 45% and reduces missed diagnoses. Use our Doctor Prep Kit to create a 1-page printable checklist of prioritized questions customized to your specific abnormal lab findings.
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => setActiveTab("doctor-prep")}
+                    className="px-6 py-3.5 rounded-2xl bg-slate-900 dark:bg-white dark:text-slate-950 text-white font-bold text-xs sm:text-sm hover:opacity-90 transition-all cursor-pointer whitespace-nowrap shadow-md"
+                  >
+                    Generate Doctor Question Sheet
+                  </button>
                 </div>
 
               </div>
@@ -1617,14 +1950,24 @@ How can I help you today?`,
                       <span className="text-xs text-slate-500 dark:text-slate-400 font-mono font-bold tracking-wider">Dr. Khan AI Explainer</span>
                     </div>
                     {analysisResult && (
-                      <button
-                        onClick={downloadSummary}
-                        className="inline-flex items-center gap-1.5 text-xs text-blue-600 dark:text-blue-400 hover:underline font-bold cursor-pointer"
-                        title="Download summary report"
-                      >
-                        <Download className="w-3.5 h-3.5" />
-                        Save PDF/MD
-                      </button>
+                      <div className="flex items-center gap-3">
+                        <button
+                          onClick={handleShareSummary}
+                          className="inline-flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-semibold cursor-pointer transition-all"
+                          title="Share Anonymized Summary"
+                        >
+                          <Share2 className="w-3.5 h-3.5" />
+                          {shareSuccess ? "Copied!" : "Share"}
+                        </button>
+                        <button
+                          onClick={downloadSummary}
+                          className="inline-flex items-center gap-1.5 text-xs text-blue-600 dark:text-blue-400 hover:underline font-bold cursor-pointer"
+                          title="Download summary report"
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                          Save PDF/MD
+                        </button>
+                      </div>
                     )}
                   </div>
 
@@ -1679,6 +2022,21 @@ How can I help you today?`,
             </div>
 
           </div>
+        )}
+
+        {/* ==================== PAGE: LAB BIOMARKERS DIRECTORY (50+ TESTS) ==================== */}
+        {activeTab === "lab-guide" && (
+          <LabGuideDirectory onLoadIntoAnalyzer={loadBiomarkerIntoAnalyzer} />
+        )}
+
+        {/* ==================== PAGE: PRESCRIPTION SIG DECODER ==================== */}
+        {activeTab === "rx-decoder" && (
+          <RxSigDecoder />
+        )}
+
+        {/* ==================== PAGE: DOCTOR PREP KIT ==================== */}
+        {activeTab === "doctor-prep" && (
+          <DoctorPrepKit />
         )}
 
         {/* ==================== PAGE: FEATURES ==================== */}
@@ -1922,21 +2280,36 @@ How can I help you today?`,
 
             {/* Column 2: Platform Links */}
             <div className="space-y-3">
-              <h4 className="font-bold font-display text-slate-900 dark:text-white uppercase tracking-wider text-[10px]">Interactive App</h4>
+              <h4 className="font-bold font-display text-slate-900 dark:text-white uppercase tracking-wider text-[10px]">Clinical Tools</h4>
               <ul className="space-y-2">
                 <li>
-                  <button onClick={() => setActiveTab("analyzer")} className="text-slate-500 hover:text-blue-600 dark:hover:text-blue-400">
+                  <button onClick={() => setActiveTab("analyzer")} className="text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer">
                     AI Report Workspace
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => { setActiveTab("home"); setTimeout(() => document.getElementById("sandbox-section")?.scrollIntoView({ behavior: "smooth" }), 100); }} className="text-slate-500 hover:text-blue-600 dark:hover:text-blue-400">
+                  <button onClick={() => setActiveTab("lab-guide")} className="text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer">
+                    Lab Biomarker Directory (50+)
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => setActiveTab("rx-decoder")} className="text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer">
+                    Prescription Sig Decoder
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => setActiveTab("doctor-prep")} className="text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer">
+                    Doctor Visit Prep Kit
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => { setActiveTab("home"); setTimeout(() => document.getElementById("sandbox-section")?.scrollIntoView({ behavior: "smooth" }), 100); }} className="text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer">
                     Free Sandbox Demo
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => setActiveTab("features")} className="text-slate-500 hover:text-blue-600 dark:hover:text-blue-400">
-                    Processing Features
+                  <button onClick={() => setActiveTab("features")} className="text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer">
+                    Processing Architecture
                   </button>
                 </li>
               </ul>
