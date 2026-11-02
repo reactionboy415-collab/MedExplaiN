@@ -14,6 +14,143 @@ export interface FeatureItem {
 
 export const SAMPLE_REPORTS: { label: string; description: string; report: LabReport }[] = [
   {
+    label: "Sample Dengue CBC",
+    description: "Acute viral hemogram demonstrating severe thrombocytopenia, leukopenia, and hemoconcentration.",
+    report: {
+      report_date: "2026-08-14",
+      lab_name: "Apex Central Pathology Labs",
+      report_type: "Complete Blood Count (CBC)",
+      biomarkers: [
+        {
+          name: "Platelets (PLT)",
+          value: "48",
+          unit: "×10³/µL",
+          reference_low: "150",
+          reference_high: "450",
+          flag: "low"
+        },
+        {
+          name: "Total Leukocyte Count (WBC)",
+          value: "2.4",
+          unit: "×10³/µL",
+          reference_low: "4.0",
+          reference_high: "11.0",
+          flag: "low"
+        },
+        {
+          name: "Hemoglobin (Hb)",
+          value: "10.4",
+          unit: "g/dL",
+          reference_low: "12.0",
+          reference_high: "17.5",
+          flag: "low"
+        },
+        {
+          name: "Hematocrit (PCV)",
+          value: "48.2",
+          unit: "%",
+          reference_low: "36.0",
+          reference_high: "46.0",
+          flag: "high"
+        }
+      ]
+    }
+  },
+  {
+    label: "Lipid Profile",
+    description: "Fasting lipid panel presenting atherogenic dyslipidemia with elevated LDL and triglycerides.",
+    report: {
+      report_date: "2026-07-29",
+      lab_name: "Metropolitan Cardiometabolic Center",
+      report_type: "Lipid Panel",
+      biomarkers: [
+        {
+          name: "Total Cholesterol",
+          value: "248",
+          unit: "mg/dL",
+          reference_low: "120",
+          reference_high: "200",
+          flag: "high"
+        },
+        {
+          name: "LDL Cholesterol ('Bad')",
+          value: "162",
+          unit: "mg/dL",
+          reference_low: "0",
+          reference_high: "100",
+          flag: "high"
+        },
+        {
+          name: "HDL Cholesterol ('Good')",
+          value: "38",
+          unit: "mg/dL",
+          reference_low: "40",
+          reference_high: "60",
+          flag: "low"
+        },
+        {
+          name: "Triglycerides",
+          value: "240",
+          unit: "mg/dL",
+          reference_low: "0",
+          reference_high: "150",
+          flag: "high"
+        },
+        {
+          name: "VLDL Cholesterol",
+          value: "48",
+          unit: "mg/dL",
+          reference_low: "5",
+          reference_high: "30",
+          flag: "high"
+        }
+      ]
+    }
+  },
+  {
+    label: "Thyroid Panel",
+    description: "Serum chemiluminescence profile indicative of primary autoimmune hypothyroidism.",
+    report: {
+      report_date: "2026-08-02",
+      lab_name: "Endocrine Diagnostic Institute",
+      report_type: "Thyroid Function Test",
+      biomarkers: [
+        {
+          name: "Thyroid Stimulating Hormone (TSH)",
+          value: "7.85",
+          unit: "mIU/L",
+          reference_low: "0.40",
+          reference_high: "4.50",
+          flag: "high"
+        },
+        {
+          name: "Free Thyroxine (Free T4)",
+          value: "0.68",
+          unit: "ng/dL",
+          reference_low: "0.80",
+          reference_high: "1.80",
+          flag: "low"
+        },
+        {
+          name: "Free Triiodothyronine (Free T3)",
+          value: "2.10",
+          unit: "pg/mL",
+          reference_low: "2.30",
+          reference_high: "4.20",
+          flag: "low"
+        },
+        {
+          name: "Anti-Thyroid Peroxidase (Anti-TPO)",
+          value: "148",
+          unit: "IU/mL",
+          reference_low: "0",
+          reference_high: "34",
+          flag: "high"
+        }
+      ]
+    }
+  },
+  {
     label: "Lab Report (Acute Fever)",
     description: "Sample blood test with hyperpyrexia (severe high fever) and borderline blood pressure.",
     report: {
@@ -90,143 +227,87 @@ export const SAMPLE_REPORTS: { label: string; description: string; report: LabRe
         }
       ]
     }
-  },
-  {
-    label: "OTC Medicine Label",
-    description: "Active ingredients list of an over-the-counter multi-symptom cold syrup.",
-    report: {
-      report_date: null,
-      lab_name: "MedExpress Apothecary",
-      report_type: "Medicine Label",
-      biomarkers: [
-        {
-          name: "Acetaminophen (Pain Reliever)",
-          value: "325",
-          unit: "mg per 15mL dose",
-          reference_low: null,
-          reference_high: null,
-          flag: null
-        },
-        {
-          name: "Dextromethorphan HBr (Cough Suppressant)",
-          value: "10",
-          unit: "mg per 15mL dose",
-          reference_low: null,
-          reference_high: null,
-          flag: null
-        },
-        {
-          name: "Phenylephrine HCl (Decongestant)",
-          value: "5",
-          unit: "mg per 15mL dose",
-          reference_low: null,
-          reference_high: null,
-          flag: null
-        }
-      ]
-    }
   }
 ];
 
 export const FEATURES: FeatureItem[] = [
   {
     id: "ocr",
-    title: "Advanced Medical OCR",
-    description: "State-of-the-art vision models scan cursive medical prescriptions, dense laboratory reports, and tiny medicine containers with high fidelity.",
+    title: "Layer 1: OCR & Biomarker Isolation",
+    description: "High-precision optical extraction of clinical units (mg/dL, g/dL, fL, mmol/L, mEq/L) and reported integers from paper tests and digital PDFs.",
     iconName: "ScanLine"
   },
   {
     id: "layman",
-    title: "Simplification Engine",
-    description: "Instantly translates confusing medical abbreviations, chemical complexes, and laboratory metrics into plain, jargon-free explanations.",
+    title: "Layer 2: Demographic & Range Normalization",
+    description: "Cross-referencing reported numbers against standard biological reference bands (Adult Male, Adult Female, Pediatric variations) across testing platforms.",
     iconName: "MessageSquareText"
   },
   {
+    id: "triage",
+    title: "Layer 3: Doctor-Ready Consultation Brief",
+    description: "Automated creation of prioritized, scientifically framed questions to prepare the patient for an empowering, time-effective physician consultation.",
+    iconName: "Stethoscope"
+  },
+  {
     id: "warning",
-    title: "Safety & Contraindications",
-    description: "Highlights key drug timing rules, overlapping active ingredients to prevent accidental double-dosing, and critical emergency red-flags.",
+    title: "Rx Duplicate Compound Detection",
+    description: "Highlights key drug timing rules, overlapping active chemical molecules (like acetaminophen overdose risks), and critical emergency red flags.",
     iconName: "ShieldAlert"
   },
   {
     id: "language",
-    title: "Multilingual Explanations",
-    description: "Explain medical summaries fluently in your language of comfort, including Spanish, French, German, Hindi, Arabic, and simplified Chinese.",
+    title: "Multilingual Medical Explanations",
+    description: "Explain medical findings fluently in your language of comfort, including Spanish, French, German, Hindi, Arabic, and simplified Chinese.",
     iconName: "Languages"
   },
   {
-    id: "pdf",
-    title: "Exportable Patient Summaries",
-    description: "Generate structured, clean PDF reports and medical logs that you can print, save, or show to your general practitioner in your next check-up.",
-    iconName: "Download"
-  },
-  {
     id: "privacy",
-    title: "HIPAA-Aligned Privacy First",
-    description: "Your health records are processed fully server-side with no persistent storage, maintaining maximum user data confidentiality and safety.",
+    title: "Zero-Knowledge In-Memory Parsing",
+    description: "No persistent patient databases or tracking cookies. All document telemetry is parsed ephemerally in volatile memory and purged immediately.",
     iconName: "Lock"
   }
 ];
 
 export const FAQS: FAQItem[] = [
   {
-    question: "Can MedExplaiN AI replace my medical doctor or diagnostic physician?",
-    answer: "No, absolutely not. MedExplaiN AI is strictly an educational tool designed to help patients understand complex reports, terminology, reference ranges, and medicine structures. It is not an active diagnostic platform and is never a replacement for a licensed healthcare professional's clinical assessment, diagnostic reasoning, or treatment recommendations."
+    question: "How does MedExplain AI normalize laboratory reference ranges across different testing methods?",
+    answer: "Different clinical laboratories (e.g., Labcorp, Quest Diagnostics, hospital analyzers) employ distinct biochemical assays, photometric reagents, and instrumentation platforms (such as chemiluminescent immunoassay, enzymatic photometry, or electrical impedance cell counters). MedExplain AI extracts both the reported patient metric AND the specific laboratory-printed biological reference interval from your document. The engine evaluates deviation relative to the reporting facility's specific calibration bands before cross-referencing against peer-reviewed consensus guidelines (such as WHO, ADA, KDIGO, and AACE standards)."
   },
   {
-    question: "Is my personal medical data safe, private, and confidential on this platform?",
-    answer: "Yes, privacy is our highest priority. All image and report processing happens in high-security, ephemeral server-side containers. Your uploaded images and base64 strings are never stored or logged in permanent databases, and are immediately deleted upon completing the analysis request. No personal identifiers (like SSN, insurance IDs, or home address) are collected or tracked."
+    question: "What are standard reference limits for Complete Blood Count (CBC) and Differential counts?",
+    answer: "A standard adult Complete Blood Count (CBC) typically includes: Hemoglobin (Adult Males: 13.8–17.2 g/dL, Adult Females: 12.1–15.1 g/dL), Hematocrit (Males: 40.7%–50.3%, Females: 36.1%–44.3%), Platelets (150,000–450,000/µL), and Total White Blood Cells (4,000–11,000/µL). The white cell differential spans Neutrophils (40%–70% or 1.5–8.0 ×10³/µL), Lymphocytes (20%–40% or 1.0–4.0 ×10³/µL), Monocytes (2%–8%), Eosinophils (1%–4%), and Basophils (0.5%–1%). Minor variations occur across individual laboratories."
   },
   {
-    question: "What types of medical documents can I upload for AI explanation?",
-    answer: "You can upload JPEG, PNG images, smartphone camera photos, and digital documents containing outpatient laboratory blood panels (CBC, CMP, Lipid panel, Thyroid panel), urine tests, hospital discharge summaries, medication bottle labels, and handwritten doctor prescription slips."
+    question: "Why do SGPT/ALT levels elevate during temporary hepatic stress?",
+    answer: "Alanine Aminotransferase (ALT / SGPT) is a cytosolic transaminase enzyme predominantly localized inside the cytoplasm of functional hepatocytes. When liver cell membranes experience transient metabolic stress—provoked by acute viral infection, high alcohol consumption, acetaminophen metabolism, statin initiation, strenuous unaccustomed weight training, or hepatic steatosis (MASLD)—increased membrane permeability or microcellular necrosis causes ALT to leak into the systemic blood circulation, resulting in elevated serum measurements."
   },
   {
-    question: "Does the AI support languages other than English?",
-    answer: "Yes, we support comprehensive multilingual medical translation. You can receive clinical explanations, dosage instructions, and physician questions fully translated into Spanish (Español), French (Français), German (Deutsch), Hindi (हिन्दी), Arabic (العربية), Chinese (中文), and more, with complex pharmacological terminology preserved accurately."
+    question: "How does the system ensure zero data persistence and absolute HIPAA-level cryptographic privacy?",
+    answer: "MedExplain AI enforces a zero-knowledge architecture. Uploaded diagnostic images and PDF documents are held exclusively in volatile RAM for the duration of the parsing request. No patient medical records, identifiable clinical summaries, or uploaded image buffers are ever written to persistent disk storage, external databases, or third-party training pipelines. Once the explanation payload is transmitted back to your browser session, the server-side memory buffer is immediately scrubbed and deallocated."
   },
   {
-    question: "What do the 'High', 'Low', or 'Flag' notations mean on my lab report?",
-    answer: "Laboratories establish standard biological reference intervals derived from 95% of healthy populations. A value labeled 'High' or 'Low' simply means your numeric metric sits outside that statistical 95% bell curve. It is a signpost for clinical correlation—not an automatic sign of disease. Mild variances can stem from hydration status, recent intense exercise, sleep patterns, or temporary viral infections."
+    question: "What is the difference between an educational interpretation and an actionable medical diagnosis?",
+    answer: "An educational interpretation demystifies diagnostic terminology, explains biological reference ranges, highlights statistical variance, and suggests prioritized discussion topics to improve patient health literacy. In contrast, an actionable medical diagnosis requires a comprehensive physical examination, personal and family medical history review, symptom correlation, and physician clinical judgment. MedExplain AI serves solely as an educational instrument to empower doctor-patient dialogue."
+  },
+  {
+    question: "Can this platform parse complex imaging summaries (MRI, CT Scan, Ultrasound impression sections)?",
+    answer: "Yes. In addition to quantitative blood and urine laboratory panels, MedExplain AI's clinical multimodal engine can ingest and translate qualitative diagnostic radiology summaries, including the 'Findings' and 'Impression' sections of Magnetic Resonance Imaging (MRI), Computed Tomography (CT), Abdominal Ultrasound, and Chest X-Rays, explaining complex radiological terminology (e.g., 'stenosis', 'effusion', 'hypodensity', 'degenerative disc desiccation') into clear language."
+  },
+  {
+    question: "Can MedExplain AI replace my medical doctor or diagnostic physician?",
+    answer: "No, absolutely not. MedExplain AI is strictly an educational tool designed to help patients understand complex reports, terminology, reference ranges, and medicine structures. It is not an active diagnostic platform and is never a replacement for a licensed healthcare professional's clinical assessment, diagnostic reasoning, or treatment recommendations."
   },
   {
     question: "Can taking two over-the-counter medicines cause an accidental drug overdose?",
-    answer: "Yes, this is an extremely common safety risk known as duplicate active ingredient toxicity. For example, acetaminophen (paracetamol) is found in hundreds of branded products (Tylenol, DayQuil, NyQuil, Excedrin, Percocet). Taking cold syrup alongside headache pills can easily exceed the safe 4,000 mg daily liver threshold. MedExplaiN AI specifically scans for active chemical molecules to alert you to overlapping duplicate ingredients."
-  },
-  {
-    question: "Why does my fasting glucose or lipid profile require 8 to 12 hours of fasting?",
-    answer: "Consuming carbohydrates or fats immediately triggers digestion, causing temporary surges in blood glucose and circulating chylomicron triglycerides. Fasting for 8–12 hours allows circulating nutrients to reach baseline homeostasis, providing your physician an accurate baseline measurement of metabolic health and insulin sensitivity."
-  },
-  {
-    question: "Can severe dehydration cause abnormal blood lab test numbers?",
-    answer: "Yes! Dehydration causes hemoconcentration—a decrease in blood plasma volume that makes circulating cells and molecules appear artificially concentrated. Dehydration frequently causes elevated hematocrit, elevated serum sodium, high blood urea nitrogen (BUN), and elevated total protein."
-  },
-  {
-    question: "Why might my serum creatinine test come back elevated after heavy exercise?",
-    answer: "Creatinine is a natural metabolic breakdown byproduct of phosphocreatine in skeletal muscle tissue. Strenuous weightlifting, crossfit, marathon running, or taking dietary creatine monohydrate supplements temporarily increases circulating creatinine without implying underlying renal kidney damage."
-  },
-  {
-    question: "What does HbA1c measure compared to a daily fingerstick blood glucose test?",
-    answer: "A standard fingerstick or fasting glucose test measures the exact sugar level in your bloodstream at that specific minute. In contrast, Hemoglobin A1c (HbA1c) measures the percentage of red blood cells coated with glucose over their 90 to 120-day natural lifespan, providing a stable 3-month panoramic view of glycemic control."
+    answer: "Yes, this is an extremely common safety risk known as duplicate active ingredient toxicity. For example, acetaminophen (paracetamol) is found in hundreds of branded products (Tylenol, DayQuil, NyQuil, Excedrin, Percocet). Taking cold syrup alongside headache pills can easily exceed the safe 4,000 mg daily liver threshold. MedExplain AI specifically scans for active chemical molecules to alert you to overlapping duplicate ingredients."
   },
   {
     question: "What do doctor prescription abbreviations like PO, BID, PRN, and QHS mean?",
     answer: "These are standard Latin medical shorthand codes: 'PO' (Per Os) means orally by mouth; 'BID' (Bis In Die) means twice a day (roughly 12 hours apart); 'PRN' (Pro Re Nata) means take only as needed when symptoms appear; 'AC' means before meals, 'PC' means after meals, and 'QHS' means take at bedtime."
   },
   {
-    question: "What should I do if my blood pressure reading is in the red hypertensive crisis zone?",
-    answer: "If your systolic blood pressure exceeds 180 mmHg or diastolic exceeds 120 mmHg, rest quietly for 5 minutes and re-measure. If readings remain at or above 180/120 mmHg, and you experience warning symptoms like chest pain, shortness of breath, back pain, numbness, or vision changes, this is an emergency requiring immediate 911 or emergency room medical attention."
-  },
-  {
-    question: "Can I download and print the AI explanation to bring to my doctor's appointment?",
-    answer: "Yes! Once Dr. Khan AI finishes analyzing your report, simply click the 'Save PDF/MD' button at the top of the explanation card. This exports a structured, cleanly formatted summary featuring your test findings, potential discussion topics, and prioritized questions for your physician."
-  },
-  {
-    question: "Can MedExplaiN AI read messy cursive handwritten doctor scripts?",
-    answer: "Yes, our server uses multimodal vision OCR tailored to decipher complex medical handwriting, Latin doctor sig abbreviations, apothecary units, and tiny medicine packaging text with high clinical confidence."
-  },
-  {
-    question: "How can I prepare the most productive questions for my doctor's visit?",
-    answer: "Review your abnormal indicators, write down your current symptoms and when they began, bring all prescription bottles and vitamins you take, and ask three core questions: 'What might be causing this value to be abnormal?', 'Do we need a follow-up confirmatory test?', and 'What lifestyle or medication changes should we consider first?'"
+    question: "What does HbA1c measure compared to a daily fingerstick blood glucose test?",
+    answer: "A standard fingerstick or fasting glucose test measures the exact sugar level in your bloodstream at that specific minute. In contrast, Hemoglobin A1c (HbA1c) measures the percentage of red blood cells coated with glucose over their 90 to 120-day natural lifespan, providing a stable 3-month panoramic view of glycemic control."
   }
 ];
-
