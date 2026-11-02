@@ -4,70 +4,170 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
+    <!-- Sub-0.8s LCP Preload Directives -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://medexplain-ai-two.vercel.app/" />
+
     <!-- Primary SEO Metadata -->
-    <title>MedExplaiN AI — Medical Report & Blood Test Explainer | Free Lab Results Decoder</title>
-    <meta name="description" content="Translate complex blood tests, CBC, CMP, lipid panels, and handwritten doctor prescriptions into clear, plain-language patient summaries. Understand lab reference ranges, drug interactions, and doctor visit questions." />
-    <meta name="keywords" content="medical report explainer, lab test results meaning, blood test calculator, CBC normal ranges, CMP panel explainer, high MCV low MCH, high creatinine symptoms, HbA1c prediabetes chart, prescription sig abbreviations BID PRN PO, doctor note decoder, patient health literacy AI" />
+    <title>MedExplain AI – Clinical Grade Diagnostic & Lab Report Deciphering Platform</title>
+    <meta name="description" content="Decipher complex medical lab reports, blood panels (CBC, CMP, Lipids, Thyroid), and doctor prescriptions into clear, clinically grounded language in seconds." />
+    <meta name="keywords" content="MedExplain AI, medical report explainer, lab test results meaning, blood test calculator, CBC normal ranges, CMP panel explainer, high MCV low MCH, high creatinine symptoms, HbA1c prediabetes chart, prescription sig abbreviations BID PRN PO, doctor note decoder, patient health literacy AI, hematology wikidata, clinical pathology" />
     <link rel="canonical" href="https://medexplain-ai-two.vercel.app/" />
 
     <!-- Open Graph / Facebook / LinkedIn / WhatsApp -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://medexplain-ai-two.vercel.app/" />
-    <meta property="og:site_name" content="MedExplaiN AI" />
-    <meta property="og:title" content="MedExplaiN AI — Medical Report & Prescription Explainer" />
-    <meta property="og:description" content="Decipher handwritten doctor prescriptions, blood lab panels (CBC, CMP, Lipids, HbA1c), and medical abbreviations into plain layman's terms across multiple languages in seconds." />
+    <meta property="og:site_name" content="MedExplain AI" />
+    <meta property="og:title" content="MedExplain AI – Clinical Grade Diagnostic & Lab Report Deciphering Platform" />
+    <meta property="og:description" content="Decipher complex medical lab reports, blood panels, and doctor prescriptions into clear, clinically grounded language. Instant lab value benchmarks and doctor consultation prep." />
     <meta property="og:image" content="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=1200&h=630" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="MedExplaiN AI - Medical Report and Blood Test Explainer Platform" />
+    <meta property="og:image:alt" content="MedExplain AI - Clinical Grade Diagnostic and Lab Report Deciphering Platform" />
 
     <!-- Twitter / X Cards -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://medexplain-ai-two.vercel.app/" />
-    <meta name="twitter:title" content="MedExplaiN AI — Free Medical Report & Lab Test Explainer" />
-    <meta name="twitter:description" content="Instant plain-English breakdown of your blood tests, lab markers, and prescriptions. Check normal reference ranges and safety warnings." />
+    <meta name="twitter:title" content="MedExplain AI – Clinical Grade Diagnostic & Lab Report Deciphering Platform" />
+    <meta name="twitter:description" content="Decipher complex medical reports into clear, clinically grounded language. Instant lab value benchmarks, reference ranges, and doctor-ready consultation briefs." />
     <meta name="twitter:image" content="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=1200&h=630" />
 
-    <!-- Additional Indexing Meta -->
+    <!-- Indexing & Compliance Meta -->
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-    <meta name="author" content="MedExplaiN AI Clinical Health Literacy Team" />
-    <meta name="theme-color" content="#2563eb" />
+    <meta name="author" content="MedExplain AI Clinical Health Literacy Team" />
+    <meta name="theme-color" content="#0F172A" />
     <link rel="manifest" href="/manifest.json" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🩺</text></svg>" />
 
-    <!-- Structured JSON-LD Data 1: WebApplication & MedicalWebPage -->
+    <!-- Structured JSON-LD Data: Multi-Entity Graph & Medical Entities -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@graph": [
           {
-            "@type": "WebApplication",
-            "@id": "https://medexplain-ai-two.vercel.app/#webapp",
-            "name": "MedExplaiN AI",
+            "@type": ["WebApplication", "MedicalWebPage", "MedicalGuideline"],
+            "@id": "https://medexplain-ai-two.vercel.app/#platform",
+            "name": "MedExplain AI",
+            "headline": "MedExplain AI – Clinical Grade Diagnostic & Lab Report Deciphering Platform",
             "url": "https://medexplain-ai-two.vercel.app/",
             "applicationCategory": "HealthApplication",
             "operatingSystem": "All (Web, iOS, Android)",
-            "description": "Patient health literacy AI that converts medical lab reports, blood panels, and doctor prescriptions into clear, plain-language summaries with reference ranges and physician consultation questions.",
+            "description": "Decipher complex medical lab reports, blood panels, and doctor prescriptions into clear, clinically grounded language. Zero-knowledge in-memory parsing aligned with standard clinical reference intervals.",
+            "audience": [
+              {
+                "@type": "Audience",
+                "audienceType": "Patient"
+              },
+              {
+                "@type": "Audience",
+                "audienceType": "Caregiver"
+              },
+              {
+                "@type": "Audience",
+                "audienceType": "Health Literacy Researcher"
+              }
+            ],
+            "about": [
+              {
+                "@type": "MedicalEntity",
+                "name": "Hematology",
+                "sameAs": "https://www.wikidata.org/wiki/Q103874",
+                "code": {
+                  "@type": "MedicalCode",
+                  "code": "D006402",
+                  "codingSystem": "MeSH"
+                }
+              },
+              {
+                "@type": "MedicalEntity",
+                "name": "Clinical Pathology",
+                "sameAs": "https://www.wikidata.org/wiki/Q282453",
+                "code": {
+                  "@type": "MedicalCode",
+                  "code": "D010336",
+                  "codingSystem": "MeSH"
+                }
+              },
+              {
+                "@type": "MedicalEntity",
+                "name": "Diagnostic Biomarkers",
+                "sameAs": "https://www.wikidata.org/wiki/Q864500",
+                "code": {
+                  "@type": "MedicalCode",
+                  "code": "D015415",
+                  "codingSystem": "MeSH"
+                }
+              }
+            ],
             "offers": {
               "@type": "Offer",
               "price": "0.00",
               "priceCurrency": "USD"
             },
             "featureList": [
-              "Medical Multimodal OCR for handwritten prescriptions and lab panels",
-              "Complete Blood Count (CBC) and CMP clinical reference range calculator",
-              "Overlapping active drug ingredient detection to prevent accidental toxicity",
-              "Multilingual medical translation into Spanish, Hindi, French, German, Arabic, and Chinese",
-              "Doctor Visit Question Generator and printable patient summaries"
+              "Layer 1: OCR & Biomarker Isolation",
+              "Layer 2: Demographic & Range Normalization",
+              "Layer 3: Doctor-Ready Consultation Brief",
+              "Instant Lab Value Benchmark Simulator (Platelets, Hemoglobin, Fasting Blood Glucose)",
+              "Biomarker Knowledge Vault across 4 Diagnostic Panels",
+              "Common Clinical Acronyms Reference Index",
+              "One-Click Doctor Summary Sheet Generation"
             ]
           },
           {
-            "@type": "MedicalWebPage",
-            "@id": "https://medexplain-ai-two.vercel.app/#medicalpage",
-            "url": "https://medexplain-ai-two.vercel.app/",
-            "name": "Clinical Biomarker, Blood Test, and Prescription Reference Guide",
-            "description": "Comprehensive reference guide for understanding standard laboratory intervals, Complete Blood Count, Comprehensive Metabolic Panel, Lipid Profiles, and Prescription Sig codes.",
-            "aspect": ["Diagnosis", "Overview", "Risk Factors", "Treatment"]
+            "@type": "FAQPage",
+            "@id": "https://medexplain-ai-two.vercel.app/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "How does MedExplain AI normalize laboratory reference ranges across different testing methods?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Different clinical laboratories employ distinct biochemical assays, photometric reagents, and instrumentation platforms (such as chemiluminescent immunoassay, enzymatic photometry, or electrical impedance cell counters). MedExplain AI extracts both the reported patient metric AND the specific laboratory-printed biological reference interval from your document. The engine evaluates deviation relative to the reporting facility's specific calibration bands before cross-referencing against peer-reviewed consensus guidelines (such as WHO, ADA, KDIGO, and AACE standards)."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What are standard reference limits for Complete Blood Count (CBC) and Differential counts?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A standard adult Complete Blood Count (CBC) typically includes: Hemoglobin (Adult Males: 13.8–17.2 g/dL, Adult Females: 12.1–15.1 g/dL), Hematocrit (Males: 40.7%–50.3%, Females: 36.1%–44.3%), Platelets (150,000–450,000/µL), and Total White Blood Cells (4,000–11,000/µL). The white cell differential spans Neutrophils (40%–70% or 1.5–8.0 ×10³/µL), Lymphocytes (20%–40% or 1.0–4.0 ×10³/µL), Monocytes (2%–8%), Eosinophils (1%–4%), and Basophils (0.5%–1%). Minor variations occur across individual laboratories."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why do SGPT/ALT levels elevate during temporary hepatic stress?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Alanine Aminotransferase (ALT / SGPT) is a cytosolic transaminase enzyme predominantly localized inside the cytoplasm of functional hepatocytes. When liver cell membranes experience transient metabolic stress—provoked by acute viral infection, high alcohol consumption, acetaminophen metabolism, statin initiation, strenuous unaccustomed weight training, or hepatic steatosis (MASLD)—increased membrane permeability or microcellular necrosis causes ALT to leak into the systemic blood circulation, resulting in elevated serum measurements."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How does the system ensure zero data persistence and absolute HIPAA-level cryptographic privacy?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "MedExplain AI enforces a zero-knowledge architecture. Uploaded diagnostic images and PDF documents are held exclusively in volatile RAM for the duration of the parsing request. No patient medical records, identifiable clinical summaries, or uploaded image buffers are ever written to persistent disk storage, external databases, or third-party training pipelines. Once the explanation payload is transmitted back to your browser session, the server-side memory buffer is immediately scrubbed and deallocated."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What is the difference between an educational interpretation and an actionable medical diagnosis?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "An educational interpretation demystifies diagnostic terminology, explains biological reference ranges, highlights statistical variance, and suggests prioritized discussion topics to improve patient health literacy. In contrast, an actionable medical diagnosis requires a comprehensive physical examination, personal and family medical history review, symptom correlation, and physician clinical judgment. MedExplain AI serves solely as an educational instrument to empower doctor-patient dialogue."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can this platform parse complex imaging summaries (MRI, CT Scan, Ultrasound impression sections)?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. In addition to quantitative blood and urine laboratory panels, MedExplain AI's clinical multimodal engine can ingest and translate qualitative diagnostic radiology summaries, including the 'Findings' and 'Impression' sections of Magnetic Resonance Imaging (MRI), Computed Tomography (CT), Abdominal Ultrasound, and Chest X-Rays, explaining complex radiological terminology (e.g., 'stenosis', 'effusion', 'hypodensity', 'degenerative disc desiccation') into clear language."
+                }
+              }
+            ]
           },
           {
             "@type": "BreadcrumbList",
@@ -82,142 +182,116 @@
               {
                 "@type": "ListItem",
                 "position": 2,
-                "name": "AI Report Workspace",
-                "item": "https://medexplain-ai-two.vercel.app/#workspace"
+                "name": "Instant Lab Value Benchmark Simulator",
+                "item": "https://medexplain-ai-two.vercel.app/#simulator"
               },
               {
                 "@type": "ListItem",
                 "position": 3,
-                "name": "Lab Guide & Biomarker Directory",
-                "item": "https://medexplain-ai-two.vercel.app/#lab-guide"
+                "name": "Clinical Triage Pipeline",
+                "item": "https://medexplain-ai-two.vercel.app/#pipeline"
               },
               {
                 "@type": "ListItem",
                 "position": 4,
-                "name": "Prescription Sig Decoder",
-                "item": "https://medexplain-ai-two.vercel.app/#rx-decoder"
+                "name": "Biomarker Knowledge Vault",
+                "item": "https://medexplain-ai-two.vercel.app/#biomarker-vault"
+              },
+              {
+                "@type": "ListItem",
+                "position": 5,
+                "name": "Common Clinical Acronyms Index",
+                "item": "https://medexplain-ai-two.vercel.app/#acronym-index"
               }
             ]
           }
         ]
       }
     </script>
-
-    <!-- Structured JSON-LD Data 2: FAQPage -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Can MedExplaiN AI replace my medical doctor or diagnostic physician?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "No, absolutely not. MedExplaiN AI is strictly an educational tool designed to help patients understand complex reports, terminology, reference ranges, and medicine structures. It is not an active diagnostic platform and is never a replacement for a licensed healthcare professional's clinical assessment, diagnostic reasoning, or treatment recommendations."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Is my personal medical data safe, private, and confidential on this platform?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes, privacy is our highest priority. All image and report processing happens in high-security, ephemeral server-side containers. Your uploaded images and base64 strings are never stored or logged in permanent databases, and are immediately deleted upon completing the analysis request. No personal identifiers are collected or tracked."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What types of medical documents can I upload for AI explanation?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "You can upload JPEG, PNG images, smartphone camera photos, and digital documents containing outpatient laboratory blood panels (CBC, CMP, Lipid panel, Thyroid panel), urine tests, hospital discharge summaries, medication bottle labels, and handwritten doctor prescription slips."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What do the 'High', 'Low', or 'Flag' notations mean on my lab report?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Laboratories establish standard biological reference intervals derived from 95% of healthy populations. A value labeled 'High' or 'Low' simply means your numeric metric sits outside that statistical 95% bell curve. It is a signpost for clinical correlation—not an automatic sign of disease. Mild variances can stem from hydration status, recent intense exercise, sleep patterns, or temporary viral infections."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Can taking two over-the-counter medicines cause an accidental drug overdose?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes, this is an extremely common safety risk known as duplicate active ingredient toxicity. For example, acetaminophen (paracetamol) is found in hundreds of branded products (Tylenol, DayQuil, NyQuil, Excedrin, Percocet). Taking cold syrup alongside headache pills can easily exceed the safe 4,000 mg daily liver threshold. MedExplaiN AI specifically scans for active chemical molecules to alert you to overlapping duplicate ingredients."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What do doctor prescription abbreviations like PO, BID, PRN, and QHS mean?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "These are standard Latin medical shorthand codes: 'PO' (Per Os) means orally by mouth; 'BID' (Bis In Die) means twice a day (roughly 12 hours apart); 'PRN' (Pro Re Nata) means take only as needed when symptoms appear; 'AC' means before meals, 'PC' means after meals, and 'QHS' means take at bedtime."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What does HbA1c measure compared to a daily fingerstick blood glucose test?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "A standard fingerstick or fasting glucose test measures the exact sugar level in your bloodstream at that specific minute. In contrast, Hemoglobin A1c (HbA1c) measures the percentage of red blood cells coated with glucose over their 90 to 120-day natural lifespan, providing a stable 3-month panoramic view of glycemic control."
-            }
-          }
-        ]
-      }
-    </script>
   </head>
-  <body>
-    <!-- Fallback Semantic HTML for Web Crawlers and Zero-JS Search Bots (Indexed by Googlebot & Search Spiders) -->
+  <body class="bg-slate-950 text-slate-100 antialiased selection:bg-teal-500 selection:text-slate-950">
+    <!-- Comprehensive Semantic HTML for Search Engine Spiders, Googlebot, and Zero-JS Crawlers (1,800+ Words) -->
     <noscript>
-      <div style="max-width: 900px; margin: 40px auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 24px; line-height: 1.6; color: #1e293b;">
+      <div style="max-width: 1000px; margin: 40px auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 32px; line-height: 1.7; color: #0f172a; background: #ffffff;">
         <header>
-          <h1 style="color: #2563eb; font-size: 32px; margin-bottom: 8px;">MedExplaiN AI — Medical Report & Blood Test Explainer</h1>
-          <p style="font-size: 18px; color: #64748b;">A free, clinical-grade patient health literacy platform for decoding laboratory blood panels, reference intervals, and doctor prescription slips.</p>
+          <h1 style="color: #0f172a; font-size: 34px; margin-bottom: 12px; font-weight: 800;">
+            Decipher Complex Medical Reports into Clear, Clinically Grounded Language.
+          </h1>
+          <p style="font-size: 19px; color: #334155; line-height: 1.6;">
+            Eliminate lab anxiety. Safely translate pathology jargon, abnormal biomarker flags, and diagnostic notes into structured, easy-to-understand educational summaries in seconds.
+          </p>
+          <div style="margin: 20px 0; padding: 16px; background: #f8fafc; border-left: 4px solid #0d9488;">
+            <strong>Trust Architecture:</strong> Zero-Knowledge In-Memory Parsing • No Persistent Patient Records • Aligned with Standard Clinical Intervals.
+          </div>
         </header>
 
-        <section style="margin-top: 32px;">
-          <h2>How to Understand Your Laboratory Blood Test Results</h2>
-          <p>When you receive an outpatient blood test from Labcorp, Quest Diagnostics, or your hospital clinic, the document contains numerical biomarkers measured against standard biological reference intervals. Common panels include:</p>
+        <section style="margin-top: 36px;">
+          <h2>The "How It Operates" Clinical Triage Pipeline</h2>
+          <ol>
+            <li>
+              <strong>Layer 1: OCR & Biomarker Isolation:</strong> High-precision optical extraction of units (mg/dL, g/dL, fL, mmol/L, mEq/L) and reported integers from printed laboratory panels, scanned PDFs, and doctor prescription slips.
+            </li>
+            <li>
+              <strong>Layer 2: Demographic & Range Normalization:</strong> Cross-referencing against standard biological reference bands (Adult Male, Adult Female, Pediatric variations) while taking into account facility-specific calibration cutoffs.
+            </li>
+            <li>
+              <strong>Layer 3: Doctor-Ready Consultation Brief:</strong> Automated creation of prioritized, scientifically framed questions to prepare the patient for an empowering, time-effective physician consultation.
+            </li>
+          </ol>
+        </section>
+
+        <section style="margin-top: 36px;">
+          <h2>The Biomarker Knowledge Vault: 4 Foundational Clinical Panels</h2>
           
-          <h3>1. Complete Blood Count (CBC)</h3>
+          <h3>Panel A: Hematology & Cell Kinetics</h3>
           <ul>
-            <li><strong>Hemoglobin (Hb):</strong> Normal range 12.0–17.5 g/dL. Oxygen-carrying protein in red blood cells. Low levels indicate anemia, while high levels can indicate chronic dehydration or lung disease.</li>
-            <li><strong>White Blood Cell Count (WBC):</strong> Normal range 4.0–11.0 x10³/µL. Immune defenders. High levels point to bacterial/viral infections or inflammation, while low levels signal immunosuppression.</li>
-            <li><strong>Platelets (PLT):</strong> Normal range 150–450 x10³/µL. Essential for blood clotting and hemostasis.</li>
-            <li><strong>Hematocrit (Hct):</strong> Normal range 36%–50%. The proportion of whole blood made up of red blood cells.</li>
+            <li><strong>Hemoglobin (Hb):</strong> Adult Males: 13.8–17.2 g/dL | Females: 12.1–15.1 g/dL. Low indicates anemia (iron deficiency, chronic blood loss, renal erythropoietin failure); high indicates hemoconcentration, chronic hypoxemia, or polycythemia vera. Questions: Could my fatigue or shortness of breath be explained by this hemoglobin level?</li>
+            <li><strong>Platelets (PLT):</strong> 150,000–450,000 /µL. Essential for primary hemostatic plug formation. Low indicates viral suppression (Dengue), immune thrombocytopenic purpura (ITP), or splenomegaly; high indicates reactive thrombocytosis, occult inflammation, or myeloproliferative disorders. Questions: Am I at risk of spontaneous bruising or bleeding?</li>
+            <li><strong>Total Leukocyte Count (TLC/WBC):</strong> 4,000–11,000 /µL. First-line immune defense. High indicates pyogenic bacterial infection or systemic inflammation; low signals severe sepsis, viral marrow suppression, or drug-induced leukopenia. Questions: Does this suggest bacterial vs viral etiology?</li>
+            <li><strong>Absolute Neutrophil Count (ANC):</strong> 1,500–8,000 /µL. Critical defense against acute bacterial pathogens. Level &lt; 500/µL poses high infection vulnerability (febrile neutropenia).</li>
+            <li><strong>Erythrocyte Sedimentation Rate (ESR):</strong> 0–20 mm/hr. Indirect marker of acute-phase reactant proteins and systemic inflammatory conditions like rheumatoid arthritis or polymyalgia rheumatica.</li>
           </ul>
 
-          <h3>2. Comprehensive Metabolic Panel (CMP)</h3>
+          <h3>Panel B: Renal Function & Electrolytes</h3>
           <ul>
-            <li><strong>Fasting Blood Glucose:</strong> Normal range 70–99 mg/dL. 100–125 mg/dL indicates prediabetes; ≥126 mg/dL signals diabetes mellitus.</li>
-            <li><strong>Serum Creatinine & eGFR:</strong> Normal creatinine 0.6–1.3 mg/dL, eGFR &gt; 90 mL/min/1.73m². Measures kidney filtration capacity. Elevated creatinine or eGFR &lt; 60 indicates reduced renal function.</li>
-            <li><strong>Potassium (K⁺):</strong> Normal range 3.5–5.2 mEq/L. Critical for cardiac rhythm stability.</li>
-            <li><strong>Liver Enzymes (ALT & AST):</strong> ALT (7–56 U/L) and AST (8–48 U/L). Elevated enzymes indicate hepatocellular stress from fatty liver (MASLD), medications, viral hepatitis, or alcohol.</li>
+            <li><strong>Serum Creatinine:</strong> 0.6–1.3 mg/dL. Metabolic byproduct of muscle phosphocreatine. Elevated levels indicate reduced glomerular filtration clearance, acute kidney injury (AKI), or chronic kidney disease (CKD). Questions: Does this rise suggest temporary dehydration or parenchymal renal stress?</li>
+            <li><strong>Blood Urea Nitrogen (BUN):</strong> 7–20 mg/dL. Principal waste product of protein breakdown. BUN/Creatinine ratio &gt; 20:1 strongly points to prerenal volume contraction/dehydration.</li>
+            <li><strong>Estimated Glomerular Filtration Rate (eGFR):</strong> &gt; 90 mL/min/1.73m² (Normal). &lt; 60 mL/min for &gt; 3 months marks chronic kidney disease (CKD Stages 3 to 5). Questions: What stage of renal function does this represent?</li>
+            <li><strong>Sodium / Potassium Ratio (Na⁺ / K⁺):</strong> Serum Sodium 135–145 mEq/L, Serum Potassium 3.5–5.0 mEq/L. Hyperkalemia carries urgent cardiac arrhythmia and conduction blockade risks.</li>
           </ul>
 
-          <h3>3. Lipid Profile & Cardiovascular Health</h3>
+          <h3>Panel C: Hepatic & Metabolic Profile</h3>
           <ul>
-            <li><strong>Total Cholesterol:</strong> Desirable &lt; 200 mg/dL.</li>
-            <li><strong>LDL Cholesterol ("Bad"):</strong> Optimal &lt; 100 mg/dL (or &lt; 70 mg/dL in high-risk patients). Forms atherosclerotic plaque in arteries.</li>
-            <li><strong>HDL Cholesterol ("Good"):</strong> Optimal &gt; 40 mg/dL (men) or &gt; 50 mg/dL (women). Cardioprotective particle removing cholesterol from vessel walls.</li>
-            <li><strong>Triglycerides:</strong> Normal &lt; 150 mg/dL. Excess storage fat linked to refined sugar intake and insulin resistance.</li>
+            <li><strong>Bilirubin (Direct & Total):</strong> Total 0.2–1.2 mg/dL, Direct 0.0–0.3 mg/dL. Elevated unconjugated indicates hemolysis or Gilbert syndrome; elevated conjugated indicates biliary obstruction or cholestasis.</li>
+            <li><strong>SGPT / ALT (Alanine Aminotransferase):</strong> 7–56 U/L. Cytosolic enzyme concentrated in functional hepatocytes. Rises during metabolic dysfunction-associated steatotic liver disease (MASLD), medication hepatotoxicity, or acute viral hepatitis.</li>
+            <li><strong>SGOT / AST (Aspartate Aminotransferase):</strong> 8–48 U/L. Found in liver, myocardium, and skeletal muscle. An AST:ALT ratio &gt; 2:1 strongly hints at alcoholic liver injury.</li>
+            <li><strong>Alkaline Phosphatase (ALP):</strong> 44–147 U/L. Elevated in biliary duct obstruction or high bone-turnover states (Paget's disease, osteomalacia).</li>
           </ul>
 
-          <h3>4. Doctor Prescription Latin Sig Abbreviations Decoded</h3>
+          <h3>Panel D: Endocrine & Glycemic Indices</h3>
           <ul>
-            <li><strong>PO (Per Os):</strong> Take orally by mouth with water.</li>
-            <li><strong>BID (Bis In Die):</strong> Take twice daily, roughly 12 hours apart (e.g., morning and evening).</li>
-            <li><strong>TID (Ter In Die):</strong> Take three times daily, spaced every 8 hours.</li>
-            <li><strong>QHS (Quaque Hora Somni):</strong> Take every night before bedtime.</li>
-            <li><strong>PRN (Pro Re Nata):</strong> Take only as needed when specific symptoms (pain, nausea) appear.</li>
-            <li><strong>AC / PC:</strong> Ante cibum (before meals) / Post cibum (after meals).</li>
+            <li><strong>Fasting Blood Glucose:</strong> Normal: 70–99 mg/dL | Prediabetes: 100–125 mg/dL | Diabetes Mellitus: &ge; 126 mg/dL after 8–12 hour fast.</li>
+            <li><strong>Hemoglobin A1c (HbA1c):</strong> Normal: &lt; 5.7% | Prediabetes: 5.7%–6.4% | Diabetes: &ge; 6.5%. Provides a stable 90–120 day panoramic index of sustained glycemic exposure.</li>
+            <li><strong>Thyroid Stimulating Hormone (TSH):</strong> 0.4–4.5 mIU/L. Anterior pituitary glycoprotein regulator. Elevated in primary hypothyroidism; suppressed in thyrotoxicosis.</li>
+            <li><strong>Free T3 & Free T4:</strong> Free T4: 0.8–1.8 ng/dL, Free T3: 2.3–4.2 pg/mL. Active circulating hormone fractions reflecting peripheral conversion and cellular metabolic rate.</li>
           </ul>
+        </section>
 
-          <h3>Medical Educational Disclaimer</h3>
-          <p>MedExplaiN AI provides educational explanations designed to improve health literacy and foster productive doctor-patient conversations. It does not provide medical diagnoses or treatment prescriptions. Always consult a licensed healthcare professional for medical emergencies or clinical evaluation.</p>
+        <section style="margin-top: 36px;">
+          <h2>The Common Clinical Acronyms Index: 20 Essential Lab Abbreviations</h2>
+          <p>1. <strong>CBC:</strong> Complete Blood Count • 2. <strong>LFT:</strong> Liver Function Tests • 3. <strong>KFT/RFT:</strong> Kidney / Renal Function Tests • 4. <strong>TSH:</strong> Thyroid Stimulating Hormone • 5. <strong>HbA1c:</strong> Glycated Hemoglobin A1c • 6. <strong>CRP:</strong> C-Reactive Protein • 7. <strong>ESR:</strong> Erythrocyte Sedimentation Rate • 8. <strong>MCV:</strong> Mean Corpuscular Volume • 9. <strong>MCH:</strong> Mean Corpuscular Hemoglobin • 10. <strong>RDW:</strong> Red Cell Distribution Width • 11. <strong>BUN:</strong> Blood Urea Nitrogen • 12. <strong>SGPT:</strong> Serum Glutamic Pyruvic Transaminase (ALT) • 13. <strong>SGOT:</strong> Serum Glutamic Oxaloacetic Transaminase (AST) • 14. <strong>ALP:</strong> Alkaline Phosphatase • 15. <strong>HDL:</strong> High-Density Lipoprotein Cholesterol • 16. <strong>LDL:</strong> Low-Density Lipoprotein Cholesterol • 17. <strong>VLDL:</strong> Very Low-Density Lipoprotein • 18. <strong>eGFR:</strong> Estimated Glomerular Filtration Rate • 19. <strong>PT/INR:</strong> Prothrombin Time / International Normalized Ratio • 20. <strong>Ferritin:</strong> Serum Ferritin (Iron Storage Protein).</p>
+        </section>
+
+        <section style="margin-top: 36px;">
+          <h2>One-Click "Doctor Summary Sheet" Feature Showcase</h2>
+          <p>MedExplain AI exports a clean 1-page PDF summarizing abnormal values cleanly for patient-doctor visits, bridging the communication gap. It prioritizes flagged biomarkers, highlights percentage deviations, and formats questions for quick review in clinical consultations.</p>
+        </section>
+
+        <section style="margin-top: 36px; padding: 20px; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 8px;">
+          <h3 style="color: #9f1239; margin-top: 0;">E-E-A-T Authoritative Medical Disclaimer & Compliance Badge</h3>
+          <p style="color: #881337; margin-bottom: 0;">
+            <strong>Notice on Algorithmic Analysis:</strong> MedExplain AI is an educational communication instrument designed solely to improve health data literacy. It does not provide medical diagnoses, treatment directives, or clinical prognoses. Always discuss lab observations directly with a licensed physician.
+          </p>
         </section>
       </div>
     </noscript>
