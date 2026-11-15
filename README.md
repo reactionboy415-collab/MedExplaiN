@@ -7,16 +7,16 @@
 </p>
 
 <p align="center">
-  <a href="https://medexplain-ai-two.vercel.app/" target="_blank">
-    <img src="https://img.shields.io/badge/🟢_Live_Demo-Website-10B981?style=for-the-badge" alt="Live Demo" />
+  <a href="[https://medexplain-ai-two.vercel.app/](https://medexplain-ai-two.vercel.app/)" target="_blank">
+    <img src="[https://img.shields.io/badge/](https://img.shields.io/badge/)🟢_Live_Demo-Website-10B981?style=for-the-badge" alt="Live Demo" />
   </a>
   <a href="#-100-free-api">
-    <img src="https://img.shields.io/badge/⚡_Free_API-Available-3B82F6?style=for-the-badge" alt="Free API" />
+    <img src="[https://img.shields.io/badge/](https://img.shields.io/badge/)⚡_Free_API-Available-3B82F6?style=for-the-badge" alt="Free API" />
   </a>
-  <a href="https://github.com/reactionboy415-collab/MedExplaiN/stargazers">
-    <img src="https://img.shields.io/github/stars/reactionboy415-collab/MedExplaiN?style=for-the-badge&color=F59E0B" alt="Stars" />
+  <a href="[https://github.com/reactionboy415-collab/MedExplaiN/stargazers](https://github.com/reactionboy415-collab/MedExplaiN/stargazers)">
+    <img src="[https://img.shields.io/github/stars/reactionboy415-collab/MedExplaiN?style=for-the-badge&color=F59E0B](https://img.shields.io/github/stars/reactionboy415-collab/MedExplaiN?style=for-the-badge&color=F59E0B)" alt="Stars" />
   </a>
-  <img src="https://img.shields.io/badge/Open_Source-❤️-E11D48?style=for-the-badge" alt="Open Source" />
+  <img src="[https://img.shields.io/badge/Open_Source-](https://img.shields.io/badge/Open_Source-)❤️-E11D48?style=for-the-badge" alt="Open Source" />
 </p>
 
 ---
@@ -47,7 +47,7 @@ Are you a developer building a health-tech app, a hackathon project, or a WhatsA
 ```python
 import requests
 
-url = "[https://medexplain-ai-two.vercel.app/api/analyze](https://medexplain-ai-two.vercel.app/api/analyze)" # Replace with actual API endpoint if different
+url = "https://medexplain-ai-two.vercel.app/api/analyze" # Replace with actual API endpoint
 payload = {
     "text": "Rx: Paracetamol 500mg BD x 5 days. Patient has mild pyrexia.",
     "language": "english" 
@@ -57,111 +57,71 @@ response = requests.post(url, json=payload)
 print(response.json())
 ```
 
+### JavaScript / Node.js Example (`fetch`)
+```javascript
+const analyzeReport = async () => {
+  const response = await fetch("https://medexplain-ai-two.vercel.app/api/analyze", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      text: "HbA1c level is 7.2%. Suggest clinical correlation.",
+      language: "english"
+    })
+  });
+  
+  const data = await response.json();
+  console.log(data);
+};
 
-# new
----
-🩺 MedExplaiN AI
-
-«Making healthcare information understandable with AI.»
-
-MedExplaiN AI is an AI-powered web application that transforms complex prescriptions, medicine labels, and medical reports into simple, easy-to-understand explanations. It helps users better understand their medications through OCR, multilingual translation, and AI-generated summaries.
-
----
-
-✨ Features
-
-- 📄 Upload prescriptions, medicine labels, or medical reports (Image/PDF)
-- 🤖 AI-powered medical explanation in simple language
-- 🌍 Multilingual translation
-- 💊 Medicine purpose, dosage, and timing
-- ⚠️ Common side effects and precautions
-- 🚨 Important warnings and safety highlights
-- 📥 Downloadable AI summary
-- 📱 Fully responsive design
-- ⚡ Fast, lightweight, and optimized for performance
+analyzeReport();
+```
 
 ---
 
-🛠️ Tech Stack
+## 💻 Local Setup & Installation
 
-- Next.js 15
-- TypeScript
-- Tailwind CSS
-- shadcn/ui
-- AI API
-- OCR Engine
-- Vercel
+Want to run MedExplaiN on your own machine or contribute? It takes less than 2 minutes.
 
----
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/reactionboy415-collab/MedExplaiN.git
+   cd MedExplaiN
+   ```
 
-🎯 Problem
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Medical prescriptions and reports often contain complex terminology that is difficult for patients to understand. This can lead to confusion and improper medication use.
-
----
-
-💡 Solution
-
-MedExplaiN AI converts medical documents into clear, patient-friendly explanations using AI while supporting multiple languages for better accessibility.
-
----
-
-🚀 Getting Started
-
-git clone https://github.com/reactionboy415-collab/MedExplaiN
-
-cd medexplain-ai
-
-npm install
-
-npm run dev
-
-Open "http://localhost:3000" in your browser.
+3. **Run the server:**
+   ```bash
+   uvicorn main:app --reload
+   ```
+   Open `http://localhost:8000` in your browser.
 
 ---
 
-📸 Demo
+## 🛠️ Tech Stack
+- **Backend:** Python, FastAPI
+- **AI/LLM:** Google Gemini AI
+- **Database:** Supabase
+- **Deployment:** Vercel
 
-- Live Demo: https://medexplain-ai-two.vercel.app
-- Demo Video: https://youtu.be/QvipKoZT2j4?si=pgYQQALleieyiPIf
+## 🤝 Contributing
+Since this is an open-source tool for social impact, contributions are highly welcome! 
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
----
+## 🙋‍♂️ About the Creator
+Built with ❤️ by **Chirag Rathi** (14yo Developer). 
+I build micro-SaaS, AI agents, and open-source tools. 
 
-📂 Project Structure
-
-app/
-components/
-public/
-lib/
-hooks/
-styles/
-
----
-
-🌍 Accessibility
-
-Designed with accessibility and responsiveness in mind, ensuring a smooth experience across desktop, tablet, and mobile devices.
-
----
-
-🔒 Privacy
-
-MedExplaiN AI is designed to respect user privacy. Uploaded files are processed only for generating explanations and should not be treated as permanent medical records.
+- 📺 **YouTube:** [@BuildWithChirag09-x1](https://www.youtube.com/@BuildWithChirag09-x1)
+- 📸 **Instagram:** [@the.chiragrathi](https://instagram.com/the.chiragrathi)
+- 📧 **Email:** developer9301@gmail.com
 
 ---
-
-⚠️ Disclaimer
-
-MedExplaiN AI is an informational tool only. It does not replace professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare professional before making medical decisions.
-
----
-
-📄 License
-
-This project is licensed under the MIT License.
-
----
-
-❤️ Built For
-
-Hackathons • AI for Social Good • Healthcare Innovation
+*If this project helped you understand a medical report or build your own app, please consider giving it a ⭐!*
