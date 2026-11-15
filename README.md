@@ -1,3 +1,61 @@
+<h1 align="center">
+  🏥 MedExplaiN - AI Medical Document Analyzer
+</h1>
+
+<p align="center">
+  <strong>Demystifying prescriptions and complex medical reports for everyone. Built for social impact.</strong>
+</p>
+
+<p align="center">
+  <a href="https://medexplain-ai-two.vercel.app/" target="_blank">
+    <img src="https://img.shields.io/badge/🟢_Live_Demo-Website-10B981?style=for-the-badge" alt="Live Demo" />
+  </a>
+  <a href="#-100-free-api">
+    <img src="https://img.shields.io/badge/⚡_Free_API-Available-3B82F6?style=for-the-badge" alt="Free API" />
+  </a>
+  <a href="https://github.com/reactionboy415-collab/MedExplaiN/stargazers">
+    <img src="https://img.shields.io/github/stars/reactionboy415-collab/MedExplaiN?style=for-the-badge&color=F59E0B" alt="Stars" />
+  </a>
+  <img src="https://img.shields.io/badge/Open_Source-❤️-E11D48?style=for-the-badge" alt="Open Source" />
+</p>
+
+---
+
+## 💡 The Problem & Solution
+
+Have you ever looked at a doctor's prescription or a lab report and felt completely lost? Medical jargon is confusing, and consulting a doctor just to understand a basic report isn't always possible. 
+
+**MedExplaiN** is an open-source, AI-powered tool that acts as your personal medical translator. You upload a document (or image), and the AI breaks it down into simple, easy-to-understand language. 
+
+No hidden fees. No paywalls. Just tech built for social impact. 🌍
+
+## ✨ Key Features
+- **📄 Smart Document OCR:** Instantly reads handwritten prescriptions and complex PDF lab reports.
+- **🧠 AI Simplification:** Converts heavy medical jargon into plain, understandable language.
+- **⚡ 100% Free Developer API:** Build your own health-tech apps without paying for expensive AI tokens.
+- **🔒 Privacy First:** We do not store your personal medical data.
+
+---
+
+## 🚀 100% FREE API (No API Key Required!)
+
+Are you a developer building a health-tech app, a hackathon project, or a WhatsApp bot? We provide a **completely free API** for you to integrate MedExplaiN's core AI into your own projects. 
+
+*If you use our API, please drop a ⭐️ on this repository to keep the servers running!*
+
+### Python Example (`requests`)
+```python
+import requests
+
+url = "[https://medexplain-ai-two.vercel.app/api/analyze](https://medexplain-ai-two.vercel.app/api/analyze)" # Replace with actual API endpoint if different
+payload = {
+    "text": "Rx: Paracetamol 500mg BD x 5 days. Patient has mild pyrexia.",
+    "language": "english" 
+}
+
+response = requests.post(url, json=payload)
+print(response.json())
+
 🩺 MedExplaiN AI
 
 «Making healthcare information understandable with AI.»
